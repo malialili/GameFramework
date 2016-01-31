@@ -19,9 +19,10 @@ Overlappable{
 	public static final int RENDERING_SIZE = 16;
 	protected boolean movable = true;
 	protected boolean vulnerable = false;
+	protected int vulnerableTimer = 0;
 
 	public Snake(Canvas defaultCanvas) {
-		spriteManager = new SpriteManagerDefaultImpl("images/pac1.gif",
+		spriteManager = new SpriteManagerDefaultImpl("images/snake.gif",
 				defaultCanvas, RENDERING_SIZE, 6);
 		spriteManager.setTypes(
 				//
@@ -30,6 +31,14 @@ Overlappable{
 				"invulnerable-right", "invulnerable-left", "invulnerable-up",
 				"invulnerable-down", //
 				"unused", "static", "unused");
+	}
+	
+	public void setInvulnerable(int timer) {
+		vulnerableTimer = timer;
+	}
+	
+	public boolean isVulnerable() {
+		return (vulnerableTimer <= 0);
 	}
 	
 	@Override
@@ -42,6 +51,10 @@ Overlappable{
 		String spriteType = "";
 		Point tmp = getSpeedVector().getDirection();
 		movable = true;
+		
+		if (!isVulnerable()) {
+			spriteType += "invulnerable-";
+		}
 
 		if (tmp.getX() == 1) {
 			spriteType += "right";
@@ -65,9 +78,10 @@ Overlappable{
 	public void oneStepMoveAddedBehavior() {
 		if (movable) {
 			spriteManager.increment();
-			
-		}
-		
+			if (!isVulnerable()) {
+				vulnerableTimer--;
+			}		
+		}	
 	}
 
 }
