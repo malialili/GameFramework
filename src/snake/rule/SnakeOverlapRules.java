@@ -1,12 +1,12 @@
 package snake.rule;
 
 import gameframework.base.ObservableValue;
-import gameframework.base.MoveStrategyRandom;
 import gameframework.base.MoveStrategyStraightLine;
 import gameframework.base.Overlap;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
+import pacman.entity.Wall;
 
 import java.awt.Point;
 import java.util.Vector;
@@ -23,19 +23,19 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	// Time duration during which pacman is invulnerable and during which ghosts
 	// can be eaten (in number of cycles)
 	static final int INVULNERABLE_DURATION = 60;
-	protected Point pacManStartPos;
+	protected Point snakeStartPos;
 	protected Point ghostStartPos;
-	protected boolean managePacmanDeath;
+	protected boolean manageSnakeDeath;
 	private final ObservableValue<Integer> score;
 	private final ObservableValue<Integer> life;
 	private final ObservableValue<Boolean> endOfGame;
-	private int totalNbGums = 0;
-	private int nbEatenGums = 0;
+	private int totalNbGrains = 0;
+	private int nbEatenGrains = 0;
 
-	public SnakeOverlapRules(Point pacPos, Point gPos,
+	public SnakeOverlapRules(Point snakePos, Point gPos,
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
 			ObservableValue<Boolean> endOfGame) {
-		pacManStartPos = (Point) pacPos.clone();
+		snakeStartPos = (Point) snakePos.clone();
 		ghostStartPos = (Point) gPos.clone();
 		this.life = life;
 		this.score = score;
@@ -46,8 +46,8 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		this.universe = universe;
 	}
 
-	public void setTotalNbGums(int totalNbGums) {
-		this.totalNbGums = totalNbGums;
+	public void setTotalNbGrains(int totalNbGrains) {
+		this.totalNbGrains = totalNbGrains;
 	}
 
 	public void addGhost(Ghost g) {
@@ -56,12 +56,12 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 	
 	public void applyOverlapRules(Vector<Overlap> overlappables) {
-		managePacmanDeath = true;
+		manageSnakeDeath = true;
 		super.applyOverlapRules(overlappables);
 	}
 
 	public void overlapRule(Snake p, Ghost g) {
-		//if (!p.isVulnerable()) {
+		if (!p.isVulnerable()) {
 			if (g.isActive()) {
 				g.setAlive(false);
 				MoveStrategyStraightLine strat = new MoveStrategyStraightLine(
@@ -71,18 +71,18 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 				ghostDriv.setStrategy(strat);
 
 			}
-		/*} else {
+		} else {
 			if (g.isActive()) {
-				if (managePacmanDeath) {
+				if (manageSnakeDeath) {
 					life.setValue(life.getValue() - 1);
-					p.setPosition(pacManStartPos);
+					p.setPosition(snakeStartPos);
 					for (Ghost ghost : vGhosts) {
 						ghost.setPosition(ghostStartPos);
 					}
-					managePacmanDeath = false;
+					manageSnakeDeath = false;
 				}
 			}
-		}*/
+		}
 	}
 
 
@@ -108,16 +108,27 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}*/
 
 	public void overlapRule(Snake p, Grain pg) {
-		score.setValue(score.getValue() + 1);
+		score.setValue(score.getValue() + 5);
 		universe.removeGameEntity(pg);
-		pacgumEatenHandler();
+		grainEatenHandler();
 	}
-
-	private void pacgumEatenHandler() {
-		nbEatenGums++;
-		if (nbEatenGums >= totalNbGums) {
+	
+	// overlap wall
+	public void overlapRule(Snake p, Wall w) {
+		life.setValue(life.getValue()-1);
+		if(life.getValue()==0)
 			endOfGame.setValue(true);
-		}
 	}
-
+/*	
+	public void overlapRule(Snake p, GrainLife grainLife) {
+		life.setValue(life.getValue() + 1);
+		universe.removeGameEntity(grainLife);
+	}
+*/
+	private void grainEatenHandler() {
+		nbEatenGrains++;
+		/*if (nbEatenGrains >= totalNbGrains) {
+			endOfGame.setValue(true);
+		}*/
+	}
 }

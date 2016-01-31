@@ -4,28 +4,29 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import gameframework.base.Drawable;
-import gameframework.base.Overlappable;
-import gameframework.game.GameEntity;
+import gameframework.base.DrawableImage;
 
-public class Bomb implements Drawable, GameEntity, Overlappable {
-
+public class Bomb implements GrainFactory {
+	
+	protected static DrawableImage image = null;
+	protected Point position;
+	public static final int RENDERING_SIZE = 16;
+	
 	@Override
 	public Rectangle getBoundingBox() {
-		// TODO Auto-generated method stub
-		return null;
+		return (new Rectangle((int) position.getX(), (int) position.getY(),
+				RENDERING_SIZE, RENDERING_SIZE));
 	}
 
 	@Override
 	public Point getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		return position;
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		// TODO Auto-generated method stub
-		
+		g.drawImage(image.getImage(), (int) getPosition().getX(),
+				(int) getPosition().getY(), RENDERING_SIZE, RENDERING_SIZE, null);
 	}
 
 }
