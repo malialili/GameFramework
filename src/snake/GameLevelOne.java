@@ -14,8 +14,9 @@ import gameframework.game.MoveBlockerChecker;
 import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
-import pacman.entity.Pacgum;
+import snake.entity.Bomb;
 import snake.entity.Grain;
+import snake.entity.GrainLife;
 import snake.entity.Snake;
 import snake.entity.Wall;
 import snake.rule.SnackMoveBlockers;
@@ -45,6 +46,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
@@ -54,8 +56,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
@@ -66,7 +67,11 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }};
 	
 	public static final int SPRITE_SIZE = 16;
-	
+	int random(int min, int max)
+	{
+	   int range = (max - min) + 1;     
+	   return (int)(Math.random() * range) + min;
+	}
 	@Override
 	protected void init() {
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
@@ -92,28 +97,37 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				if (tab[i][j] == 2) {
 					universe.addGameEntity(new Grain(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGrains++;
-				}
-				
+				}		
 				if (tab[i][j] == 1) {
 					universe.addGameEntity(new Wall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+				}
+				if(tab[i][j]== 3){
+					universe.addGameEntity(new GrainLife(canvas,new Point(j*SPRITE_SIZE, i* SPRITE_SIZE)));
+				}
+				if(tab[i][j]== 4){
+					universe.addGameEntity(new Bomb(canvas,new Point(j*SPRITE_SIZE, i* SPRITE_SIZE)));
 				}
 						
 			}
 		}
+		overlapRules.setTotalNbGrains(totalNbGrains);
 		
-		// Pacman definition and inclusion in the universe
+		//Snake definition and inclusion in the universe
 				Snake mySnake = new Snake(canvas);
-				GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
+				GameMovableDriverDefaultImpl snakeDriver = new GameMovableDriverDefaultImpl();
 				MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
-				pacDriver.setStrategy(keyStr);
-				pacDriver.setmoveBlockerChecker(moveBlockerChecker);
+				snakeDriver.setStrategy(keyStr);
+				snakeDriver.setmoveBlockerChecker(moveBlockerChecker);
 				canvas.addKeyListener(keyStr);
-				mySnake.setDriver(pacDriver);
+				mySnake.setDriver(snakeDriver);
 				mySnake.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 				universe.addGameEntity(mySnake);
+				
+				if(totalNbGrains==0){
+					universe.addGameEntity(new Grain(canvas, new Point(random(0, 27) * SPRITE_SIZE, random(0, 30)  * SPRITE_SIZE)));
+					totalNbGrains++;
+					
+				}
 		
 	}
-
-	
-
 }

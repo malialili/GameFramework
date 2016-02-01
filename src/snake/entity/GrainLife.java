@@ -12,7 +12,7 @@ public class GrainLife implements GrainFactory{
 	public static final int RENDERING_SIZE = 16;
 
 	public GrainLife (Canvas defaultCanvas, Point pos) {
-		image = new DrawableImage("images/grain.gif", defaultCanvas);
+		image = new DrawableImage("images/grain-life.gif", defaultCanvas);
 		position = pos;
 	}
 
