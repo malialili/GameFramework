@@ -5,9 +5,11 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import snake.entity.grain.IGrain;
+
 import gameframework.base.DrawableImage;
 
-public class Bomb implements GrainFactory {
+public class Bomb implements IGrain {
 	
 	protected static DrawableImage image = null;
 	protected Point position;
@@ -17,6 +19,7 @@ public class Bomb implements GrainFactory {
 		image = new DrawableImage("images/bomb.gif", defaultCanvas);
 		position = pos;
 	}
+	
 	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle((int) position.getX(), (int) position.getY(),

@@ -15,21 +15,22 @@ import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
 import snake.entity.Bomb;
-import snake.entity.Grain;
-import snake.entity.GrainLife;
 import snake.entity.Snake;
 import snake.entity.Wall;
+import snake.entity.grain.GrainFactory;
+import snake.entity.grain.IGrainFactory;
 import snake.rule.SnackMoveBlockers;
 import snake.rule.SnakeOverlapRules;
 
 
 public class GameLevelOne extends GameLevelDefaultImpl{
 	Canvas canvas;
+	IGrainFactory grainFact;
 	
 	public GameLevelOne(Game g) {
 		super(g);
 		canvas = g.getCanvas();
-
+		grainFact = new GrainFactory();
 	}
 	
 	
@@ -89,20 +90,24 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		gameBoard = new GameUniverseViewPortDefaultImpl(canvas, universe);
 		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
 		
+		
 		int totalNbGrains = 0;	
 		
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 28; ++j) {
 				
 				if (tab[i][j] == 2) {
-					universe.addGameEntity(new Grain(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
+					universe.addGameEntity(grainFact.creerGrainLife(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGrains++;
-				}		
+
+					System.out.println("grian life cree");
+				}
+
 				if (tab[i][j] == 1) {
 					universe.addGameEntity(new Wall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 				}
 				if(tab[i][j]== 3){
-					universe.addGameEntity(new GrainLife(canvas,new Point(j*SPRITE_SIZE, i* SPRITE_SIZE)));
+					universe.addGameEntity(grainFact.creerGrainLife(canvas,new Point(j*SPRITE_SIZE, i* SPRITE_SIZE)));
 				}
 				if(tab[i][j]== 4){
 					universe.addGameEntity(new Bomb(canvas,new Point(j*SPRITE_SIZE, i* SPRITE_SIZE)));
@@ -124,7 +129,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				universe.addGameEntity(mySnake);
 				
 				if(totalNbGrains==0){
-					universe.addGameEntity(new Grain(canvas, new Point(random(0, 27) * SPRITE_SIZE, random(0, 30)  * SPRITE_SIZE)));
+					universe.addGameEntity( grainFact.creerGrainScore(canvas, new Point(random(0, 27) * SPRITE_SIZE, random(0, 30)  * SPRITE_SIZE)));
 					totalNbGrains++;
 					
 				}

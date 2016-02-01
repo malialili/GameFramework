@@ -1,18 +1,21 @@
-package snake.entity;
+package snake.entity.grain;
+
+import gameframework.base.DrawableImage;
+
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import gameframework.base.DrawableImage;
 
-public class GrainLife implements GrainFactory{
+public class GrainScore implements IGrain{
+
 	protected static DrawableImage image = null;
 	protected Point position;
 	public static final int RENDERING_SIZE = 16;
 
-	public GrainLife (Canvas defaultCanvas, Point pos) {
-		image = new DrawableImage("images/grain-life.gif", defaultCanvas);
+	public GrainScore (Canvas defaultCanvas, Point pos) {
+		image = new DrawableImage("images/grain.gif", defaultCanvas);
 		position = pos;
 	}
 
@@ -31,4 +34,10 @@ public class GrainLife implements GrainFactory{
 		return (new Rectangle((int) position.getX(), (int) position.getY(),
 				RENDERING_SIZE, RENDERING_SIZE));
 	}
+		
+	public String toString(){
+		return "GrainScore";
+	}
+
+
 }
