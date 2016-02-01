@@ -81,7 +81,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		moveBlockerChecker.setMoveBlockerRules(new SnackMoveBlockers());
 		
 		SnakeOverlapRules overlapRules = new SnakeOverlapRules(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE),
-				new Point(14 * SPRITE_SIZE, 15 * SPRITE_SIZE), life[0], score[0], endOfGame);
+				new Point(14 * SPRITE_SIZE, 15 * SPRITE_SIZE), life[0], score[0], endOfGame, canvas);
 		overlapProcessor.setOverlapRules(overlapRules);
 
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
@@ -97,7 +97,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 			for (int j = 0; j < 28; ++j) {
 				
 				if (tab[i][j] == 2) {
-					universe.addGameEntity(grainFact.creerGrainLife(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
+					universe.addGameEntity(grainFact.creerGrainScore(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGrains++;
 
 					System.out.println("grian life cree");
@@ -115,7 +115,9 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 						
 			}
 		}
+		
 		overlapRules.setTotalNbGrains(totalNbGrains);
+		overlapRules.setCanvas(canvas);
 		
 		//Snake definition and inclusion in the universe
 				Snake mySnake = new Snake(canvas);
@@ -128,11 +130,6 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				mySnake.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 				universe.addGameEntity(mySnake);
 				
-				if(totalNbGrains==0){
-					universe.addGameEntity( grainFact.creerGrainScore(canvas, new Point(random(0, 27) * SPRITE_SIZE, random(0, 30)  * SPRITE_SIZE)));
-					totalNbGrains++;
-					
-				}
 		
 	}
 }
