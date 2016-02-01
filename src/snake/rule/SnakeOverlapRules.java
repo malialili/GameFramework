@@ -11,20 +11,16 @@ import pacman.entity.Wall;
 import java.awt.Point;
 import java.util.Vector;
 
+import snake.entity.Bomb;
 import snake.entity.Ghost;
 import snake.entity.Snake;
-import snake.entity.grain.GrainFactory;
-import snake.entity.grain.GrainLife;
 import snake.entity.grain.IGrain;
-import snake.entity.grain.IGrainFactory;
 
 public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	
 	protected GameUniverse universe;
 	protected Vector<Ghost> vGhosts = new Vector<Ghost>();
 
-	// Time duration during which pacman is invulnerable and during which ghosts
-	// can be eaten (in number of cycles)
 	static final int INVULNERABLE_DURATION = 60;
 	protected Point snakeStartPos;
 	protected Point ghostStartPos;
@@ -134,17 +130,26 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		if(life.getValue()==0)
 			endOfGame.setValue(true);
 	}
-	/*
-	public void overlapRule(Snake p, GrainLife grainLife) {
+
+	/*public void overlapRule(Snake p, GrainLife grainLife) {
 		life.setValue(life.getValue() + 1);
 		universe.removeGameEntity(grainLife);
 		System.out.println("je mange");
+	}*/
+
+	
+	public void overlapRule(Snake p, Bomb bomb) {
+		life.setValue(life.getValue() - 1);
+		universe.removeGameEntity(bomb);
+		if(life.getValue()==0)
+			endOfGame.setValue(true);
+		
 	}
-	*/
+
 	private void grainEatenHandler() {
 		nbEatenGrains++;
 		/*if (nbEatenGrains >= totalNbGrains) {
-			endOfGame.setValue(true);
+			endOfGame.setValue(true);  //you win
 		}*/
 	}
 }
