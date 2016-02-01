@@ -99,8 +99,6 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				if (tab[i][j] == 2) {
 					universe.addGameEntity(grainFact.creerGrainScore(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGrains++;
-
-					System.out.println("grian life cree");
 				}
 
 				if (tab[i][j] == 1) {
@@ -117,7 +115,6 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		}
 		
 		overlapRules.setTotalNbGrains(totalNbGrains);
-		overlapRules.setCanvas(canvas);
 		
 		//Snake definition and inclusion in the universe
 				Snake mySnake = new Snake(canvas);
