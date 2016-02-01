@@ -15,6 +15,7 @@ import java.util.Vector;
 import snake.entity.Bomb;
 import snake.entity.Ghost;
 import snake.entity.Snake;
+import snake.entity.grain.GrainFactory;
 import snake.entity.grain.GrainLife;
 import snake.entity.grain.GrainScore;
 import snake.entity.grain.IGrain;
@@ -39,13 +40,14 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 	public SnakeOverlapRules(Point snakePos, Point gPos,
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
-			ObservableValue<Boolean> endOfGame, Canvas canvas ) {
+			ObservableValue<Boolean> endOfGame) {
 		snakeStartPos = (Point) snakePos.clone();
 		ghostStartPos = (Point) gPos.clone();
 		this.life = life;
 		this.score = score;
 		this.endOfGame = endOfGame;
-		this.canvas =canvas;
+		canvas = new Canvas();
+		grainFact= new GrainFactory();
 	}
 
 	public void setUniverse(GameUniverse universe) {
@@ -131,7 +133,10 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		System.out.println("je mange"+  totalNbGrains);
 		if(totalNbGrains==0){
 			System.out.println("aaaaaaaa");
-			universe.addGameEntity( new GrainScore(canvas, new Point(random(0, 27)*16, random(0, 30)*16)));
+			//grainScore= new GrainScore(canvas, new Point(random(0, 27)*17, random(0, 30)*17));
+			grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(random(3, 24)*16, random(3, 27)*16));
+			universe.addGameEntity( grainScore);
+			System.out.println(grainScore.getPosition());
 			//universe.addGameEntity(grainScore);
 			totalNbGrains++;
 			
