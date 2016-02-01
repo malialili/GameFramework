@@ -14,21 +14,23 @@ import gameframework.game.MoveBlockerChecker;
 import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
-import pacman.entity.Pacgum;
-import snake.entity.Grain;
+
 import snake.entity.Snake;
 import snake.entity.Wall;
+import snake.entity.grain.GrainFactory;
+import snake.entity.grain.IGrainFactory;
 import snake.rule.SnackMoveBlockers;
 import snake.rule.SnakeOverlapRules;
 
 
 public class GameLevelOne extends GameLevelDefaultImpl{
 	Canvas canvas;
+	IGrainFactory grainFact;
 	
 	public GameLevelOne(Game g) {
 		super(g);
 		canvas = g.getCanvas();
-
+		grainFact = new GrainFactory();
 	}
 	
 	
@@ -84,14 +86,16 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		gameBoard = new GameUniverseViewPortDefaultImpl(canvas, universe);
 		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
 		
+		
 		int totalNbGrains = 0;	
 		
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 28; ++j) {
 				
 				if (tab[i][j] == 2) {
-					universe.addGameEntity(new Grain(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
+					universe.addGameEntity(grainFact.creerGrainLife(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGrains++;
+					System.out.println("grian life cree");
 				}
 				
 				if (tab[i][j] == 1) {
