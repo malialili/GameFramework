@@ -8,13 +8,18 @@ import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
 import pacman.entity.Wall;
 
+import java.awt.Canvas;
 import java.awt.Point;
 import java.util.Vector;
 
 import snake.entity.Bomb;
 import snake.entity.Ghost;
 import snake.entity.Snake;
+import snake.entity.grain.GrainFactory;
+import snake.entity.grain.GrainLife;
+import snake.entity.grain.GrainScore;
 import snake.entity.grain.IGrain;
+import snake.entity.grain.IGrainFactory;
 
 public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	
@@ -30,6 +35,8 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	private final ObservableValue<Boolean> endOfGame;
 	private int totalNbGrains = 0;
 	private int nbEatenGrains = 0;
+	IGrainFactory grainFact;
+	Canvas canvas;
 
 	public SnakeOverlapRules(Point snakePos, Point gPos,
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
@@ -39,8 +46,17 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		this.life = life;
 		this.score = score;
 		this.endOfGame = endOfGame;
+		this.canvas = new Canvas();
+		grainFact = new GrainFactory();
 	}
 
+	public static final int SPRITE_SIZE = 16;
+	int random(int min, int max)
+	{
+	   int range = (max - min) + 1;     
+	   return (int)(Math.random() * range) + min;
+	}
+	
 	public void setUniverse(GameUniverse universe) {
 		this.universe = universe;
 	}
@@ -85,28 +101,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 
 
-	/*public void overlapRule(Snake g) {
-		if (!g.isActive()) {
-			g.setAlive(true);
-			MoveStrategyRandom strat = new MoveStrategyRandom();
-			GameMovableDriverDefaultImpl ghostDriv = (GameMovableDriverDefaultImpl) g
-					.getDriver();
-			ghostDriv.setStrategy(strat);
-			g.setPosition(ghostStartPos);
-		}
-	}*/
-
-	/*public void overlapRule(Snake p, Graine spg) {
-		score.setValue(score.getValue() + 5);
-		universe.removeGameEntity(spg);
-		pacgumEatenHandler();
-		p.setInvulnerable(INVULNERABLE_DURATION);
-		for (Ghost ghost : vGhosts) {
-			ghost.setAfraid(INVULNERABLE_DURATION);
-		}
-	}*/
-
-	public void overlapRule(Snake p, IGrain pg) {
+	/*public void overlapRule(Snake p, IGrain pg) {
 		System.out.println(pg.getClass().getName());
 		System.out.println("je suis dans la fonction");
 		switch (pg.getClass().getName()){
@@ -122,7 +117,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 			break;
 		default: System.out.println("rien");
 		}
-	}
+	}*/
 	
 	// overlap wall
 	public void overlapRule(Snake p, Wall w) {
@@ -131,11 +126,18 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 			endOfGame.setValue(true);
 	}
 
-	/*public void overlapRule(Snake p, GrainLife grainLife) {
-		life.setValue(life.getValue() + 1);
-		universe.removeGameEntity(grainLife);
-		System.out.println("je mange");
-	}*/
+	public void overlapRule(Snake p, GrainScore grainScore) {
+		score.setValue(score.getValue() + 1);
+		universe.removeGameEntity(grainScore);
+		totalNbGrains--;
+		System.out.println("je mange et score "+ totalNbGrains);
+		
+		if(totalNbGrains==0){
+			universe.addGameEntity( grainFact.creerGrainScore(canvas, new Point(random(0, 20) * SPRITE_SIZE, random(0, 15)  * SPRITE_SIZE)));
+			System.out.println("in IF "+totalNbGrains);	
+			totalNbGrains++;
+		}
+	}
 
 	
 	public void overlapRule(Snake p, Bomb bomb) {

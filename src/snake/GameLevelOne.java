@@ -26,6 +26,7 @@ import snake.rule.SnakeOverlapRules;
 public class GameLevelOne extends GameLevelDefaultImpl{
 	Canvas canvas;
 	IGrainFactory grainFact;
+	int totalNbGrains = 0;	
 	
 	public GameLevelOne(Game g) {
 		super(g);
@@ -91,16 +92,14 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
 		
 		
-		int totalNbGrains = 0;	
-		
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 28; ++j) {
 				
 				if (tab[i][j] == 2) {
-					universe.addGameEntity(grainFact.creerGrainLife(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
+					universe.addGameEntity(grainFact.creerGrainScore(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGrains++;
 
-					System.out.println("grian life cree");
+					System.out.println("grian score");
 				}
 
 				if (tab[i][j] == 1) {
@@ -116,7 +115,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 			}
 		}
 		overlapRules.setTotalNbGrains(totalNbGrains);
-		
+			
 		//Snake definition and inclusion in the universe
 				Snake mySnake = new Snake(canvas);
 				GameMovableDriverDefaultImpl snakeDriver = new GameMovableDriverDefaultImpl();
@@ -127,12 +126,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				mySnake.setDriver(snakeDriver);
 				mySnake.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 				universe.addGameEntity(mySnake);
-				
-				if(totalNbGrains==0){
-					universe.addGameEntity( grainFact.creerGrainScore(canvas, new Point(random(0, 27) * SPRITE_SIZE, random(0, 30)  * SPRITE_SIZE)));
-					totalNbGrains++;
-					
-				}
 		
 	}
+	
 }
