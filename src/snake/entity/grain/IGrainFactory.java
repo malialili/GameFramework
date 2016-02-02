@@ -1,7 +1,5 @@
 package snake.entity.grain;
 
-import gameframework.base.Drawable;
-import gameframework.base.Overlappable;
 import gameframework.game.GameEntity;
 
 import java.awt.Canvas;

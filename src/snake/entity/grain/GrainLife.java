@@ -13,7 +13,7 @@ public class GrainLife implements IGrain{
 	public static final int RENDERING_SIZE = 16;
 
 	public GrainLife (Canvas defaultCanvas, Point pos) {
-		image = new DrawableImage("images/grain-life.gif", defaultCanvas);
+		image = new DrawableImage("images/grainLife.gif", defaultCanvas);
 		position = pos;
 	}
 
