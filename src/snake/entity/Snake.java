@@ -32,7 +32,6 @@ Overlappable{
 				"invulnerable-down", //
 				"unused", "static", "unused");
 	}
-	
 	public void setInvulnerable(int timer) {
 		vulnerableTimer = timer;
 	}
@@ -40,22 +39,18 @@ Overlappable{
 	public boolean isVulnerable() {
 		return (vulnerableTimer <= 0);
 	}
-	
 	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE));
 	}
-
 	@Override
 	public void draw(Graphics g) {
 		String spriteType = "";
 		Point tmp = getSpeedVector().getDirection();
-		movable = true;
-		
+		movable = true;	
 		if (!isVulnerable()) {
 			spriteType += "invulnerable-";
 		}
-
 		if (tmp.getX() == 1) {
 			spriteType += "right";
 		} else if (tmp.getX() == -1) {
@@ -70,8 +65,7 @@ Overlappable{
 			movable = false;
 		}
 		spriteManager.setType(spriteType);
-		spriteManager.draw(g, getPosition());
-		
+		spriteManager.draw(g, getPosition());		
 	}
 
 	@Override
