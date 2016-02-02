@@ -114,7 +114,6 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		}
 		
 		overlapRules.setTotalNbGrains(totalNbGrains);
-		overlapRules.setCanvas(canvas);
 		
 		//Snake definition and inclusion in the universe
 				Snake mySnake = new Snake(canvas);

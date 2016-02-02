@@ -6,7 +6,7 @@ import gameframework.base.Overlap;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
-import pacman.entity.Wall;
+import snake.entity.Wall;
 
 import java.awt.Canvas;
 import java.awt.Point;
@@ -118,8 +118,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 			endOfGame.setValue(true);
 	}
 
-	int random(int min, int max)
-	{
+	int random(int min, int max){
 	   int range = (max - min) + 1;     
 	   return (int)(Math.random() * range) + min;
 	}
@@ -132,7 +131,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		if(totalNbGrains==0){
 			grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(random(2, 25)*16, random(2, 28)*16));
 			universe.addGameEntity( grainScore);
-			System.out.println(grainScore.getPosition());
+			//System.out.println(grainScore.getPosition());
 			totalNbGrains++;		
 		}
 	}
@@ -144,18 +143,9 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		
 		if(nbEatenGrains>=10){
 			grainLife= (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(2, 25)*16, random(2, 28)*16));
-			universe.addGameEntity( grainLife);
+			universe.addGameEntity(grainLife);
 			//System.out.println(grainLife.getPosition());		
 		}
-	}
-	
-
-	public Canvas getCanvas() {
-		return canvas;
-	}
-
-	public void setCanvas(Canvas canvas) {
-		this.canvas = canvas;
 	}
 
 	public void overlapRule(Snake p, Bomb bomb) {
