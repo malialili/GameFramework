@@ -99,10 +99,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				if (tab[i][j] == 2) {
 					universe.addGameEntity(grainFact.creerGrainScore(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGrains++;
-
-					System.out.println("grian life cree");
 				}
-
 				if (tab[i][j] == 1) {
 					universe.addGameEntity(new Wall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 				}
