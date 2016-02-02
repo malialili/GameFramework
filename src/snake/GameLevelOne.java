@@ -68,11 +68,14 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }};
 	
 	public static final int SPRITE_SIZE = 16;
+	
+	//Random
 	int random(int min, int max)
 	{
 	   int range = (max - min) + 1;     
 	   return (int)(Math.random() * range) + min;
 	}
+	
 	@Override
 	protected void init() {
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
@@ -96,12 +99,11 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		for (int i = 0; i < 31; ++i) {
 			for (int j = 0; j < 28; ++j) {
 				
-				if (tab[i][j] == 2) {
+				if (tab[i][j]== 2) {
 					universe.addGameEntity(grainFact.creerGrainScore(canvas, new Point(j * SPRITE_SIZE, i * SPRITE_SIZE)));
 					totalNbGrains++;
 				}
-
-				if (tab[i][j] == 1) {
+				if (tab[i][j]== 1) {
 					universe.addGameEntity(new Wall(canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 				}
 				if(tab[i][j]== 3){

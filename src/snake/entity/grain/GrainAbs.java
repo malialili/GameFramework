@@ -1,6 +1,5 @@
 package snake.entity.grain;
 
-import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
