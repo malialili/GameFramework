@@ -6,15 +6,16 @@ import gameframework.base.Overlap;
 import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
-import snake.entity.Wall;
 
 import java.awt.Canvas;
 import java.awt.Point;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 import snake.entity.Bomb;
 import snake.entity.Ghost;
 import snake.entity.Snake;
+import snake.entity.Wall;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.GrainLife;
 import snake.entity.grain.GrainScore;
@@ -28,6 +29,11 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	IGrainFactory grainFact;
 
 	static final int INVULNERABLE_DURATION = 60;
+	static final int MIN_XY= 2;
+	static final int MAX_X= 25;
+	static final int MAX_Y= 28;
+	static final int SPRITE_SIZE = 16;
+	
 	protected Point snakeStartPos;
 	protected Point ghostStartPos;
 	protected boolean manageSnakeDeath;
@@ -133,7 +139,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		grainEatenHandler();
 		
 		if(totalNbGrains==0){
-			grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(random(2, 25)*16, random(2, 28)*16));
+			grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			universe.addGameEntity( grainScore);
 			//System.out.println(grainScore.getPosition());
 			totalNbGrains++;		
@@ -141,14 +147,16 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 	
 	//GrainLife
-	public void overlapRule(Snake p, GrainLife grainLife) {
+	public void overlapRule(Snake p, GrainLife grainLife) throws InterruptedException {
 		life.setValue(life.getValue() + 1);
 		universe.removeGameEntity(grainLife);
-		
-		if(nbEatenGrains>=10){
-			grainLife= (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(2, 25)*16, random(2, 28)*16));
+		if(nbEatenGrains>=3){
+			grainLife= (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			universe.addGameEntity(grainLife);
-			//System.out.println(grainLife.getPosition());		
+			//System.out.println("j'attend");
+			//TimeUnit.SECONDS.sleep(5);
+			//Thread.sleep(1000);
+			//universe.removeGameEntity(grainLife);	
 		}
 	}
 
