@@ -24,22 +24,28 @@ Overlappable{
 	public Snake(Canvas defaultCanvas) {
 		spriteManager = new SpriteManagerDefaultImpl("images/snake.gif",
 				defaultCanvas, RENDERING_SIZE, 6);
-		spriteManager.setTypes(
+		/*spriteManager.setTypes(
 				//
 				"right", "left", "up",
 				"down",//
 				"invulnerable-right", "invulnerable-left", "invulnerable-up",
 				"invulnerable-down", //
-				"unused", "static", "unused");
+				"unused", "static", "unused");*/
+		
+		spriteManager.setTypes(
+				//
+				"head-right", "head-down", "head-left", "head-up",//
+				"body-right-left", "body-up-down", "body-right", "body-down", "body-left", "body-up",//
+				"tail-down", "tail-left", "tail-up", "tail-right");
 	}
 	
-	public void setInvulnerable(int timer) {
+	/*public void setInvulnerable(int timer) {
 		vulnerableTimer = timer;
 	}
 	
 	public boolean isVulnerable() {
 		return (vulnerableTimer <= 0);
-	}
+	}*/
 	
 	@Override
 	public Rectangle getBoundingBox() {
@@ -51,24 +57,24 @@ Overlappable{
 		String spriteType = "";
 		Point tmp = getSpeedVector().getDirection();
 		movable = true;
-		
+		/*
 		if (!isVulnerable()) {
 			spriteType += "invulnerable-";
-		}
+		}*/
 
 		if (tmp.getX() == 1) {
-			spriteType += "right";
+			spriteType += "head-right";
 		} else if (tmp.getX() == -1) {
-			spriteType += "left";
+			spriteType += "head-left";
 		} else if (tmp.getY() == 1) {
-			spriteType += "down";
+			spriteType += "head-down";
 		} else if (tmp.getY() == -1) {
-			spriteType += "up";
-		} else {
+			spriteType += "haed-up";
+		} /*else {
 			spriteType = "static";
 			spriteManager.reset();
 			movable = false;
-		}
+		}*/
 		spriteManager.setType(spriteType);
 		spriteManager.draw(g, getPosition());
 		
@@ -78,9 +84,9 @@ Overlappable{
 	public void oneStepMoveAddedBehavior() {
 		if (movable) {
 			spriteManager.increment();
-			if (!isVulnerable()) {
+			/*if (!isVulnerable()) {
 				vulnerableTimer--;
-			}		
+			}*/		
 		}	
 	}
 

@@ -74,7 +74,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 
 	public void overlapRule(Snake p, Ghost g) {
-		if (!p.isVulnerable()) {
+		//if (!p.isVulnerable()) {
 			if (g.isActive()) {
 				g.setAlive(false);
 				MoveStrategyStraightLine strat = new MoveStrategyStraightLine(
@@ -84,7 +84,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 				ghostDriv.setStrategy(strat);
 
 			}
-		} else {
+	//	} else {
 			if (g.isActive()) {
 				if (manageSnakeDeath) {
 					life.setValue(life.getValue() - 1);
@@ -96,7 +96,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 				}
 			}
 		}
-	}
+	//}
 
 /*
 	public void overlapRule(Snake p, IGrain pg) {
@@ -149,6 +149,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		if(nbEatenGrains>=3){
 			grainLife= (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			universe.addGameEntity(grainLife);
+		
 			//System.out.println("j'attend");
 			//TimeUnit.SECONDS.sleep(5);
 			//Thread.sleep(1000);
