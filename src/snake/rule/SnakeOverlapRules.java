@@ -9,15 +9,11 @@ import gameframework.game.OverlapRulesApplierDefaultImpl;
 
 import java.awt.Canvas;
 import java.awt.Point;
-import java.util.Vector;
 
-import snake.GameLevelOne;
-import snake.entity.Bomb;
-import snake.entity.Ghost;
-import snake.entity.Snake;
 import snake.entity.SnakeHead;
 import snake.entity.Wall;
 import snake.entity.boardgame.BordGame;
+import snake.entity.grain.Bomb;
 import snake.entity.grain.GrainDead;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.GrainLife;
@@ -26,12 +22,9 @@ import snake.entity.grain.IGrainFactory;
 
 public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	
-	protected GameUniverse universe;
-	protected Vector<Ghost> vGhosts = new Vector<Ghost>();
-
 	static final int MIN_XY= 2;
 	static final int MAX_X= 25;
-	static final int MAX_Y= 28;
+	static final int MAX_Y= 27;
 	static final int SPRITE_SIZE = 16;
 	static final int IGRAIN_DURATION = 15;
 	
@@ -39,12 +32,15 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	private final ObservableValue<Integer> life;
 	private final ObservableValue<Boolean> endOfGame;
 	protected IGrainFactory grainFact;
-	private Wall wall;
 	private int totalNbGrains = 0;
 	private int nbEatenGrains = 0;
-	protected Canvas canvas;
 	private int[][] tab = BordGame.getTab();
+	protected Canvas canvas;
+	protected GameUniverse universe;
 
+	GrainLife grainLife;
+	boolean isGrainLifeCreated = false;
+	
 	public SnakeOverlapRules(Point snakePos, Point gPos,
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
 			ObservableValue<Boolean> endOfGame) {
@@ -71,16 +67,12 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 
 	// overlap wall
-	public void overlapRule(Snake p, Wall w) {
-		System.out.println("je me suis cheurté au mur");
-		life.setValue(life.getValue()-1);
+	public void overlapRule(SnakeHead p, Wall w) {
+		System.out.println("je suis là");
+		life.setValue(0);
 		if(life.getValue()==0)
 			endOfGame.setValue(true);
-		//}
 	}	
-
-	GrainLife grainLife;
-	boolean isGrainLifeCreated = false;
 
 	public void overlapRule(SnakeHead p, GrainScore grainScore) {
 		score.setValue(score.getValue() + 5);
@@ -88,40 +80,49 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		grainEatenHandler();
 		
 		if(totalNbGrains == 0){
-			grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
-			universe.addGameEntity( grainScore);
-			totalNbGrains++;		
+			int x = random(MIN_XY, MAX_X) ;
+			int y = random(MIN_XY, MAX_Y) ;
+			System.out.println( x+","+y);
+			if(tab[x][y]==1){
+				System.out.println("un autre random");
+				 x = random(MIN_XY, MAX_X) ;
+				 y = random(MIN_XY, MAX_Y) ;
+				 grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(x * SPRITE_SIZE, y * SPRITE_SIZE));
+				 universe.addGameEntity( grainScore);
+				 System.out.println("un autre "+x+","+y);
+				 totalNbGrains++;
+			} else {
+				grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(x * SPRITE_SIZE, y * SPRITE_SIZE));
+				universe.addGameEntity( grainScore);
+				totalNbGrains++;
+			}
 		}
 
-	
-		if(nbEatenGrains == 10){
+		if(nbEatenGrains == 5){
 			int j = 15;
 			while (j < 27) {
 				if (tab[5][j]== 0) {
 					tab[5][j]= 1;
-					System.out.println("modif plateau "+ j);
-					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 5* SPRITE_SIZE));
+					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 5 * SPRITE_SIZE));
 				}
 			    j++;
 			}
 		}
-		if(nbEatenGrains == 20){
+		if(nbEatenGrains == 10){
 			int j = 6;
 			while (j < 15) {
 				if (tab[15][j]== 0) {
 					tab[15][j]= 1;
-					System.out.println("modif plateau "+ j);
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 15* SPRITE_SIZE));
 				}
 			    j++;
 			}
 		}
-		if(nbEatenGrains == 30){
+		if(nbEatenGrains == 20){
 			int j = 0;
 			while (j < 17) {
 				if (tab[22][j]== 0) {
 					tab[22][j]= 1;
-					System.out.println("modif plateau "+ j);
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 22* SPRITE_SIZE));
 				}
 			    j++;
@@ -129,7 +130,6 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		}
 		
 		if(nbEatenGrains == 5 || nbEatenGrains == 15 || nbEatenGrains == 25){
-			System.out.println("je crée grainLife");
 			grainLife = (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			isGrainLifeCreated = true;
 			universe.addGameEntity(grainLife);
@@ -137,25 +137,19 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		}
 		
 		if(isGrainLifeCreated){
-			if(grainLife.isInvisible()== true){
-				System.out.println("je suis à off");
+			if(grainLife.isInvisible()== true)
 				universe.removeGameEntity(grainLife);
-			}else{
+			else
 				grainLife.operation();
-			}
 		}
 		
 		if(nbEatenGrains == 8 || nbEatenGrains == 18|| nbEatenGrains == 28){
-			System.out.println("je crée grainDead");
 			universe.addGameEntity(grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE)));
-		}
-		
+		}	
 	}
 	
 	//GrainLife
 	public void overlapRule(SnakeHead p, GrainLife grainLife){
-		System.out.println("je veux a life");
-		System.out.println("g mangé " + nbEatenGrains);
 		life.setValue(life.getValue() + 1);
 		universe.removeGameEntity(grainLife);
 	}
@@ -164,7 +158,6 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		life.setValue(life.getValue() - 1);
 		score.setValue(0);
 		universe.removeGameEntity(graindead);
-		System.out.println("j'ai mangé grainDead");
 		if (life.getValue()==0)
 			System.out.println("Vous avez perdu votre dernière vie :( ");
 	}
@@ -182,9 +175,6 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	private void grainEatenHandler() {
 		nbEatenGrains++;
 		totalNbGrains--;
-		/*if (nbEatenGrains >= totalNbGrains) {
-			endOfGame.setValue(true);  //you win
-		}*/
 	}
 	
 	public int getNbEatenGrains() {

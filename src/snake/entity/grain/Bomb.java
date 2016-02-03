@@ -1,15 +1,13 @@
-package snake.entity;
+package snake.entity.grain;
+
+import gameframework.base.DrawableImage;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import snake.entity.grain.IGrain;
-
-import gameframework.base.DrawableImage;
-
-public class Bomb implements IGrain {
+public class Bomb extends GrainAbs {
 	
 	protected static DrawableImage image = null;
 	protected Point position;
@@ -35,6 +33,11 @@ public class Bomb implements IGrain {
 	public void draw(Graphics g) {
 		g.drawImage(image.getImage(), (int) getPosition().getX(),
 				(int) getPosition().getY(), RENDERING_SIZE, RENDERING_SIZE, null);
+	}
+
+	@Override
+	public String toString() {
+		return "Bomb";
 	}
 
 }

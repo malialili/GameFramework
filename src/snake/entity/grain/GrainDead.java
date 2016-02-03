@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 
-public class GrainDead implements IGrain{
+public class GrainDead extends GrainAbs{
 
 	protected static DrawableImage image = null;
 	protected Point position;
@@ -18,7 +18,7 @@ public class GrainDead implements IGrain{
 		image = new DrawableImage("images/grain-dead.gif", defaultCanvas);
 		position = pos;
 	}
-
+	
 	public Point getPosition() {
 		return position;
 	}
