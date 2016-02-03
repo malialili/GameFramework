@@ -48,35 +48,6 @@ public abstract class Snake extends GameMovable implements Drawable, GameEntity,
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE));
 	}
-	/*
-	@Override
-	public void draw(Graphics g) {
-		String spriteType = "";
-		Point tmp = getSpeedVector().getDirection();
-		movable = true;
-		
-		if (tmp.getX() == 1) {
-			spriteType += "head-right";
-		} else if (tmp.getX() == -1) {
-			spriteType += "head-left";
-		} else if (tmp.getY() == 1) {
-			spriteType += "head-down";
-		} else if (tmp.getY() == -1) {
-			spriteType += "head-up";
-		} else { spriteType += "head-right";
-			spriteManager.reset();
-			movable = false;
-		}
-		spriteManager.setType(spriteType);
-		spriteManager.draw(g, getPosition());		
-	}
-	@Override
-	public void oneStepMoveAddedBehavior() {
-		if (movable) {
-			spriteManager.increment();		
-		}	
-	}
-	*/
 	public String getLastMove() {
 		return lastMove;
 	}
