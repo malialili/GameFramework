@@ -8,11 +8,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 
-public class GrainDead implements IGrain{
+public class GrainDead extends GrainAbs{
 
 	protected static DrawableImage image = null;
 	protected Point position;
 	public static final int RENDERING_SIZE = 16;
+	protected int inVisibleTimer = 0;
 
 	public GrainDead (Canvas defaultCanvas, Point pos) {
 		image = new DrawableImage("images/grain-dead.gif", defaultCanvas);
@@ -33,6 +34,21 @@ public class GrainDead implements IGrain{
 	public Rectangle getBoundingBox() {
 		return (new Rectangle((int) position.getX(), (int) position.getY(),
 				RENDERING_SIZE, RENDERING_SIZE));
+	}
+	
+	public void setGrainVisible(int timer){
+		inVisibleTimer = timer;
+	}
+	
+	public boolean isInvisible(){
+		System.out.println("timer " + inVisibleTimer);
+		return (inVisibleTimer <= 0);
+	}
+	
+	public void operation(){
+		if(!isInvisible()){
+			inVisibleTimer = inVisibleTimer -5;
+		}
 	}
 	
 	public String toString(){

@@ -3,27 +3,37 @@ package snake.entity;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.List;
 
 import gameframework.base.MoveStrategyStraightLine;
 import gameframework.game.GameMovableDriverDefaultImpl;
 
-public class SnakeTail extends Snake{
+public class SnakeTail extends SnakeAbstract{
 
-	protected Snake body;
+	protected static SnakeAbstract body;
 	MoveStrategyStraightLine strat;
 	GameMovableDriverDefaultImpl snakeDriver;
+	
+	private static SnakeTail singleSnakeTail;
 
-	public SnakeTail(Canvas defaultCanvas, Snake body) {
+	public SnakeTail(Canvas defaultCanvas, SnakeAbstract body) {
 		super(defaultCanvas);
-		this.body = body;
+		SnakeTail.body = body;
+	}
+	
+	public static SnakeTail getInstance(){
+		if(singleSnakeTail == null){
+			singleSnakeTail = new SnakeTail(new Canvas(), body);
+		}
+		return singleSnakeTail;
 	}
 	
 	@Override
 	public void draw(Graphics g) {
 		String spriteType = "tail-";
-		Point tmp=this.body.getSpeedVector().getDirection();
+		Point tmp=SnakeTail.body.getSpeedVector().getDirection();
 
-		switch(this.body.getCurrentMove()){
+		switch(SnakeTail.body.getCurrentMove()){
 		case "turn-up-right": 
 			if(tmp.getY()==-1){
 				spriteType +="up";
@@ -99,5 +109,23 @@ public class SnakeTail extends Snake{
 		if (movable) {
 			spriteManager.increment();		
 		}
+	}
+
+	@Override
+	public void add(SnakeAbstract s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove(SnakeAbstract s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<SnakeAbstract> getChildren() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

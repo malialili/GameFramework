@@ -14,10 +14,11 @@ import java.util.Vector;
 import snake.GameLevelOne;
 import snake.entity.Bomb;
 import snake.entity.Ghost;
-import snake.entity.Snake;
+import snake.entity.SnakeAbstract;
 import snake.entity.SnakeHead;
 import snake.entity.Wall;
 import snake.entity.boardgame.BordGame;
+import snake.entity.grain.GrainAbs;
 import snake.entity.grain.GrainDead;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.GrainLife;
@@ -33,13 +34,12 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	static final int MAX_X= 25;
 	static final int MAX_Y= 28;
 	static final int SPRITE_SIZE = 16;
-	static final int IGRAIN_DURATION = 15;
+	static final int IGRAIN_DURATION = 10;
 	
 	private final ObservableValue<Integer> score;
 	private final ObservableValue<Integer> life;
 	private final ObservableValue<Boolean> endOfGame;
 	protected IGrainFactory grainFact;
-	private Wall wall;
 	private int totalNbGrains = 0;
 	private int nbEatenGrains = 0;
 	protected Canvas canvas;
@@ -71,7 +71,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 
 	// overlap wall
-	public void overlapRule(Snake p, Wall w) {
+	public void overlapRule(SnakeAbstract p, Wall w) {
 		System.out.println("je me suis cheurté au mur");
 		life.setValue(life.getValue()-1);
 		if(life.getValue()==0)
@@ -79,10 +79,12 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		//}
 	}	
 
-	GrainLife grainLife;
+	GrainAbs grainLife, grainDead;
 	boolean isGrainLifeCreated = false;
+	boolean isGrainDeadCreated = false;
 
 	public void overlapRule(SnakeHead p, GrainScore grainScore) {
+		
 		score.setValue(score.getValue() + 5);
 		universe.removeGameEntity(grainScore);
 		grainEatenHandler();
@@ -92,8 +94,92 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 			universe.addGameEntity( grainScore);
 			totalNbGrains++;		
 		}
-
+		
+		GameWithGrainLife();
+		GameWithGrainDead();
+		GameWithBomb();
+		GameWithWall();
 	
+	}
+	
+	//GrainLife
+	public void overlapRule(SnakeHead p, GrainLife grainLife){
+		System.out.println("vous avez une vie de gagnée :)");
+		life.setValue(life.getValue() + 1);
+		universe.removeGameEntity(grainLife);
+	}
+	
+	public void overlapRule(SnakeHead p, GrainDead graindead){
+		life.setValue(life.getValue() - 1);
+		score.setValue(0);
+		universe.removeGameEntity(graindead);
+		System.out.println("vous avez mangé grainDead!!! vous perdez une vie :(");
+		if (life.getValue()==0)
+			System.out.println("Vous avez perdu votre dernière vie :( ");
+	}
+
+	public void overlapRule(SnakeHead p, Bomb bomb) {
+		life.setValue(0);
+		universe.removeGameEntity(bomb);
+
+		if(life.getValue()==0){
+			System.out.println("Vous vous êtes heurté à une Bombe !!! FIN DE JEU");
+			endOfGame.setValue(true);
+		}
+	}
+
+	public void GameWithGrainLife(){
+		if(nbEatenGrains == 5 || nbEatenGrains == 15 || nbEatenGrains == 25){
+			System.out.println("je crée grainLife");
+			grainLife = (GrainAbs) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
+			isGrainLifeCreated = true;
+			universe.addGameEntity(grainLife);
+			grainLife.setGrainVisible(IGRAIN_DURATION);
+		}
+		
+		if(isGrainLifeCreated){
+			if(grainLife.isInvisible()== true){
+				System.out.println("je suis à off");
+				universe.removeGameEntity(grainLife);
+			}else{
+				grainLife.operation();
+			}
+		}
+		
+	}
+	
+	public void GameWithGrainDead(){
+		
+		if(nbEatenGrains == 8 || nbEatenGrains == 22 || nbEatenGrains == 32){
+			System.out.println("un grainDead a été créé");
+			grainDead = (GrainAbs) grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
+			isGrainDeadCreated = true;
+			universe.addGameEntity(grainDead);
+			grainDead.setGrainVisible(IGRAIN_DURATION);
+		}
+		
+		if(isGrainDeadCreated){
+			if(grainDead.isInvisible()== true){
+				universe.removeGameEntity(grainDead);
+			}else{
+				grainDead.operation();
+			}
+		}
+		
+	}
+	
+	public void GameWithBomb(){
+		int i = 0;
+		if (i<4){
+			if(nbEatenGrains == 16 || nbEatenGrains == 36|| nbEatenGrains == 46){
+				System.out.println("la bombe n°"+ i +" a été créée");
+				universe.addGameEntity(grainFact.creerBomb(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE)));
+			i++;
+			}
+		}
+	}
+	
+	public void GameWithWall(){
 		if(nbEatenGrains == 10){
 			int j = 15;
 			while (j < 27) {
@@ -126,65 +212,13 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 				}
 			    j++;
 			}
-		}
-		
-		if(nbEatenGrains == 5 || nbEatenGrains == 15 || nbEatenGrains == 25){
-			System.out.println("je crée grainLife");
-			grainLife = (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
-			isGrainLifeCreated = true;
-			universe.addGameEntity(grainLife);
-			grainLife.setGrainVisible(IGRAIN_DURATION);
-		}
-		
-		if(isGrainLifeCreated){
-			if(grainLife.isInvisible()== true){
-				System.out.println("je suis à off");
-				universe.removeGameEntity(grainLife);
-			}else{
-				grainLife.operation();
-			}
-		}
-		
-		if(nbEatenGrains == 8 || nbEatenGrains == 18|| nbEatenGrains == 28){
-			System.out.println("je crée grainDead");
-			universe.addGameEntity(grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE)));
-		}
-		
+		}		
 	}
+
 	
-	//GrainLife
-	public void overlapRule(SnakeHead p, GrainLife grainLife){
-		System.out.println("je veux a life");
-		System.out.println("g mangé " + nbEatenGrains);
-		life.setValue(life.getValue() + 1);
-		universe.removeGameEntity(grainLife);
-	}
-	
-	public void overlapRule(SnakeHead p, GrainDead graindead){
-		life.setValue(life.getValue() - 1);
-		score.setValue(0);
-		universe.removeGameEntity(graindead);
-		System.out.println("j'ai mangé grainDead");
-		if (life.getValue()==0)
-			System.out.println("Vous avez perdu votre dernière vie :( ");
-	}
-
-	public void overlapRule(SnakeHead p, Bomb bomb) {
-		life.setValue(0);
-		universe.removeGameEntity(bomb);
-
-		if(life.getValue()==0){
-			System.out.println("Vous avez perdu !!!");
-			endOfGame.setValue(true);
-		}
-	}
-
 	private void grainEatenHandler() {
 		nbEatenGrains++;
 		totalNbGrains--;
-		/*if (nbEatenGrains >= totalNbGrains) {
-			endOfGame.setValue(true);  //you win
-		}*/
 	}
 	
 	public int getNbEatenGrains() {
