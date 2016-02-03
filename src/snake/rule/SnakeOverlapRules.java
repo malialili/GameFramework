@@ -71,12 +71,12 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 
 	// overlap wall
-
 	public void overlapRule(Snake p, Wall w) {
 		System.out.println("je me suis cheurté au mur");
 		life.setValue(life.getValue()-1);
 		if(life.getValue()==0)
 			endOfGame.setValue(true);
+		//}
 	}	
 
 	GrainLife grainLife;

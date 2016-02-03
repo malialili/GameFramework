@@ -86,6 +86,7 @@ public class SnakeTail extends Snake{
 			break;
 		default:
 			spriteType += "left";
+			movable= false;
 		}
 		
 		lastMove = currentMove;
