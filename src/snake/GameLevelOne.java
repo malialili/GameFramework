@@ -15,7 +15,6 @@ import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
 import snake.entity.Bomb;
-import snake.entity.SnakeAbstract;
 import snake.entity.SnakeBody;
 import snake.entity.SnakeComposite;
 import snake.entity.SnakeHead;
@@ -105,11 +104,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();			
 		snakeDriver.setStrategy(keyStr);		
 		snakeDriver.setmoveBlockerChecker(moveBlockerChecker);
-		canvas.addKeyListener(keyStr);				
-		//mySnake.setDriver(snakeDriver);
-		//mySnake.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		//universe.addGameEntity(mySnake);
-		
+		canvas.addKeyListener(keyStr);		
 		
 		scomposite.setDriver1(snakeDriver);
 		scomposite.setPosition1(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));

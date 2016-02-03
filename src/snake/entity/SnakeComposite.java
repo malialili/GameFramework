@@ -11,8 +11,7 @@ import java.util.List;
 public class SnakeComposite extends SnakeAbstract {
 
 	List<SnakeAbstract> listeComposantSnake = new ArrayList<SnakeAbstract>();
-	int indexLastSnakeBody = 1;
-	
+	int sizeListe;
 	public SnakeComposite(Canvas defaultCanvas) {
 		super(defaultCanvas);
 	}
@@ -29,7 +28,9 @@ public class SnakeComposite extends SnakeAbstract {
 	}
 	
 	public void addBody(SnakeAbstract s) {
-		listeComposantSnake.add(indexLastSnakeBody, s);
+		sizeListe = listeComposantSnake.size();
+		listeComposantSnake.add(sizeListe-2, s);
+		setSizeListe(sizeListe +1);
 	}
 
 	@Override
@@ -57,6 +58,15 @@ public class SnakeComposite extends SnakeAbstract {
 	public void setDriver1(GameMovableDriver driver){
 		for (SnakeAbstract s : listeComposantSnake)
 	    	  s.setDriver(driver);		
+	}
+
+
+	public int getSizeListe() {
+		return sizeListe;
+	}
+
+	public void setSizeListe(int sizeListe) {
+		this.sizeListe = sizeListe;
 	}
 
 }

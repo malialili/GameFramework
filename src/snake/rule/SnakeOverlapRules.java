@@ -18,6 +18,7 @@ import snake.entity.SnakeAbstract;
 import snake.entity.SnakeHead;
 import snake.entity.Wall;
 import snake.entity.boardgame.BordGame;
+import snake.entity.grain.GrainAbs;
 import snake.entity.grain.GrainDead;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.GrainLife;
@@ -39,7 +40,6 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	private final ObservableValue<Integer> life;
 	private final ObservableValue<Boolean> endOfGame;
 	protected IGrainFactory grainFact;
-	private Wall wall;
 	private int totalNbGrains = 0;
 	private int nbEatenGrains = 0;
 	protected Canvas canvas;
@@ -79,8 +79,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		//}
 	}	
 
-	GrainLife grainLife;
-	GrainDead grainDead;
+	GrainAbs grainLife, grainDead;
 	boolean isGrainLifeCreated = false;
 	boolean isGrainDeadCreated = false;
 
@@ -132,7 +131,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	public void GameWithGrainLife(){
 		if(nbEatenGrains == 5 || nbEatenGrains == 15 || nbEatenGrains == 25){
 			System.out.println("je crée grainLife");
-			grainLife = (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
+			grainLife = (GrainAbs) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			isGrainLifeCreated = true;
 			universe.addGameEntity(grainLife);
 			grainLife.setGrainVisible(IGRAIN_DURATION);
@@ -153,7 +152,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		
 		if(nbEatenGrains == 8 || nbEatenGrains == 22 || nbEatenGrains == 32){
 			System.out.println("un grainDead a été créé");
-			grainDead = (GrainDead) grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
+			grainDead = (GrainAbs) grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			isGrainDeadCreated = true;
 			universe.addGameEntity(grainDead);
 			grainDead.setGrainVisible(IGRAIN_DURATION);
