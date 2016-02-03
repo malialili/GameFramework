@@ -17,8 +17,6 @@ public abstract class SnakeAbstract extends GameMovable implements Drawable, Gam
 	protected final SpriteManager spriteManager;
 	public static final int RENDERING_SIZE = 16;
 	protected boolean movable = true;
-	protected boolean vulnerable = false;
-	protected int vulnerableTimer = 0;
 	protected String lastMove = "";
 	protected String currentMove = "";
 	protected Point lastPosition=new Point(14 * 16, 17 * 16);

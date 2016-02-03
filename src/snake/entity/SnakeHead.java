@@ -50,7 +50,7 @@ public class SnakeHead extends SnakeAbstract{
 		spriteManager.draw(g, getPosition());
 	}
 	
-	@Override
+	
 	public void oneStepMoveAddedBehavior() {
 		if (movable) {
 			spriteManager.increment();		

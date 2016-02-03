@@ -14,7 +14,6 @@ import gameframework.game.MoveBlockerChecker;
 import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
-import snake.entity.Snake;
 import snake.entity.SnakeBody;
 import snake.entity.SnakeComposite;
 import snake.entity.SnakeHead;
@@ -37,7 +36,6 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 	public GameLevelOne(Game g) {
 		super(g);
 		canvas = g.getCanvas();
-		//grainFact = new GrainFactory();
 	}
 	
 	int tab[][] = BordGame.getTab();
