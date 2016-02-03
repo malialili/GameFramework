@@ -40,4 +40,22 @@ public class Bomb extends GrainAbs{
 		return "Bomb";
 	}
 
+	@Override
+	public void setGrainVisible(int timer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isInvisible() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void operation() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
