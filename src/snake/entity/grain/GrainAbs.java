@@ -13,11 +13,6 @@ public abstract class GrainAbs implements IGrain {
 	protected Point position;
 	public static final int RENDERING_SIZE = 16;
 
-	/*public GrainAbs(Canvas defaultCanvas, Point pos) {
-		//image = new DrawableImage("images/grain.gif", defaultCanvas);
-		position = pos;
-	}*/
-
 	public Point getPosition() {
 		return position;
 	}

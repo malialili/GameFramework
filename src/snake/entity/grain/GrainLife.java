@@ -11,6 +11,8 @@ public class GrainLife implements IGrain{
 	protected static DrawableImage image = null;
 	protected Point position;
 	public static final int RENDERING_SIZE = 16;
+	protected boolean grainIsInvisible = false;
+	protected int inVisibleTimer = 0;
 
 	public GrainLife (Canvas defaultCanvas, Point pos) {
 		image = new DrawableImage("images/grainLife.gif", defaultCanvas);
@@ -27,10 +29,26 @@ public class GrainLife implements IGrain{
 				null);
 
 	}
-
+	
 	public Rectangle getBoundingBox() {
 		return (new Rectangle((int) position.getX(), (int) position.getY(),
 				RENDERING_SIZE, RENDERING_SIZE));
+	}
+	
+	
+	public void setGrainVisible(int timer){
+		inVisibleTimer = timer;
+	}
+	
+	public boolean isInvisible(){
+		System.out.println("timer " + inVisibleTimer);
+		return (inVisibleTimer <= 0);
+	}
+	
+	public void operation(){
+		if(!isInvisible()){
+			inVisibleTimer = inVisibleTimer -5;
+		}
 	}
 	
 	public String toString(){
