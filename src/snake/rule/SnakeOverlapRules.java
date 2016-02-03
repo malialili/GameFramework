@@ -43,7 +43,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	private int totalNbGrains = 0;
 	private int nbEatenGrains = 0;
 	protected Canvas canvas;
-	private int[][] tab = BordGame.getTab();;
+	private int[][] tab = BordGame.getTab();
 
 	public SnakeOverlapRules(Point snakePos, Point gPos,
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
@@ -73,6 +73,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	// overlap wall
 
 	public void overlapRule(Snake p, Wall w) {
+		System.out.println("je me suis cheurté au mur");
 		life.setValue(life.getValue()-1);
 		if(life.getValue()==0)
 			endOfGame.setValue(true);
@@ -93,30 +94,33 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		}
 
 	
-		if(nbEatenGrains == 1){
+		if(nbEatenGrains == 10){
 			int j = 15;
 			while (j < 27) {
 				if (tab[5][j]== 0) {
+					tab[5][j]= 1;
 					System.out.println("modif plateau "+ j);
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 5* SPRITE_SIZE));
 				}
 			    j++;
 			}
 		}
-		if(nbEatenGrains == 2){
+		if(nbEatenGrains == 20){
 			int j = 6;
 			while (j < 15) {
 				if (tab[15][j]== 0) {
+					tab[15][j]= 1;
 					System.out.println("modif plateau "+ j);
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 15* SPRITE_SIZE));
 				}
 			    j++;
 			}
 		}
-		if(nbEatenGrains == 3){
+		if(nbEatenGrains == 30){
 			int j = 0;
 			while (j < 17) {
 				if (tab[22][j]== 0) {
+					tab[22][j]= 1;
 					System.out.println("modif plateau "+ j);
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 22* SPRITE_SIZE));
 				}
