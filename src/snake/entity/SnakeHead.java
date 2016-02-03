@@ -31,9 +31,9 @@ public class SnakeHead extends Snake{
 			spriteType += "up";
 			currentMove = "up";
 		} else {
-			spriteType += "left";
-			currentMove= "left";
-			movable = false;
+				spriteType += "left";
+				currentMove= "left";	
+				movable = false;
 		}
 		lastPosition=this.getPosition();
 		

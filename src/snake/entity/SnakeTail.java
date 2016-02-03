@@ -95,6 +95,8 @@ public class SnakeTail extends Snake{
 
 	@Override
 	public void oneStepMoveAddedBehavior() {
-		//
+		if (movable) {
+			spriteManager.increment();		
+		}
 	}
 }

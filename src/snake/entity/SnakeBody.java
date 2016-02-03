@@ -101,6 +101,8 @@ public class SnakeBody extends Snake{
 
 	@Override
 	public void oneStepMoveAddedBehavior() {
-		//
+		if (movable) {
+			spriteManager.increment();		
+		}
 	}
 }
