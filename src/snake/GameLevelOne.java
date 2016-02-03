@@ -16,12 +16,14 @@ import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
 import snake.entity.Bomb;
 import snake.entity.Snake;
+import snake.entity.SnakeBody;
+import snake.entity.SnakeHead;
+import snake.entity.SnakeTail;
 import snake.entity.Wall;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.IGrainFactory;
 import snake.rule.SnackMoveBlockers;
 import snake.rule.SnakeOverlapRules;
-
 
 public class GameLevelOne extends GameLevelDefaultImpl{
 	Canvas canvas;
@@ -32,7 +34,6 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		canvas = g.getCanvas();
 		grainFact = new GrainFactory();
 	}
-	
 	
 	static int[][] tab = { 
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -70,8 +71,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 	public static final int SPRITE_SIZE = 16;
 	
 	//Random
-	int random(int min, int max)
-	{
+	int random(int min, int max){
 	   int range = (max - min) + 1;     
 	   return (int)(Math.random() * range) + min;
 	}
@@ -93,7 +93,6 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		gameBoard = new GameUniverseViewPortDefaultImpl(canvas, universe);
 		((CanvasDefaultImpl) canvas).setDrawingGameBoard(gameBoard);
 		
-		
 		int totalNbGrains = 0;	
 		
 		for (int i = 0; i < 31; ++i) {
@@ -111,24 +110,38 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				}
 				if(tab[i][j]== 4){
 					universe.addGameEntity(new Bomb(canvas,new Point(j*SPRITE_SIZE, i* SPRITE_SIZE)));
-				}
-						
+				}			
 			}
 		}
 		
 		overlapRules.setTotalNbGrains(totalNbGrains);
 		
 		//Snake definition and inclusion in the universe
-				Snake mySnake = new Snake(canvas);
-				GameMovableDriverDefaultImpl snakeDriver = new GameMovableDriverDefaultImpl();
-				MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();
-				snakeDriver.setStrategy(keyStr);
-				snakeDriver.setmoveBlockerChecker(moveBlockerChecker);
-				canvas.addKeyListener(keyStr);
-				mySnake.setDriver(snakeDriver);
-				mySnake.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-				universe.addGameEntity(mySnake);
+				//Snake mySnake = new Snake(canvas);
 				
-		
+				Snake snakeH = new SnakeHead(canvas);
+				Snake snakeB = new SnakeBody(canvas, snakeH);
+				//Snake snakeT = new SnakeTail(canvas, snakeB);
+				
+				GameMovableDriverDefaultImpl snakeDriver = new GameMovableDriverDefaultImpl();
+				MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();			
+				snakeDriver.setStrategy(keyStr);		
+				snakeDriver.setmoveBlockerChecker(moveBlockerChecker);
+				canvas.addKeyListener(keyStr);				
+				//mySnake.setDriver(snakeDriver);
+				//mySnake.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+				//universe.addGameEntity(mySnake);
+				
+				
+				snakeH.setDriver(snakeDriver);
+				snakeH.setPosition(new Point(14 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+				universe.addGameEntity(snakeH);
+				snakeB.setDriver(snakeDriver);
+				snakeB.setPosition(new Point(15 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+				universe.addGameEntity(snakeB);
+				/*snakeT.setDriver(snakeDriver);
+				snakeT.setPosition(new Point(16 * SPRITE_SIZE, 17 * SPRITE_SIZE));
+				universe.addGameEntity(snakeT);	*/						
 	}
 }
+

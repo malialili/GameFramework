@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import snake.entity.Bomb;
 import snake.entity.Ghost;
 import snake.entity.Snake;
+import snake.entity.SnakeHead;
 import snake.entity.Wall;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.GrainLife;
@@ -118,7 +119,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}*/
 	
 	// overlap wall
-	public void overlapRule(Snake p, Wall w) {
+	public void overlapRule(SnakeHead p, Wall w) {
 		life.setValue(life.getValue()-1);
 		if(life.getValue()==0)
 			endOfGame.setValue(true);
@@ -129,7 +130,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	   return (int)(Math.random() * range) + min;
 	}
 	// grainScore
-	public void overlapRule(Snake p, GrainScore grainScore) {
+	public void overlapRule(SnakeHead p, GrainScore grainScore) {
 		score.setValue(score.getValue() + 5);
 		universe.removeGameEntity(grainScore);
 		grainEatenHandler();
@@ -143,7 +144,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 	
 	//GrainLife
-	public void overlapRule(Snake p, GrainLife grainLife) throws InterruptedException {
+	public void overlapRule(SnakeHead p, GrainLife grainLife) throws InterruptedException {
 		life.setValue(life.getValue() + 1);
 		universe.removeGameEntity(grainLife);
 		if(nbEatenGrains>=3){
