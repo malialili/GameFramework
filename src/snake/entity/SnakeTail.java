@@ -4,8 +4,6 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import javax.swing.Spring;
-
 import gameframework.base.MoveStrategyStraightLine;
 import gameframework.game.GameMovableDriverDefaultImpl;
 
@@ -19,68 +17,84 @@ public class SnakeTail extends Snake{
 		super(defaultCanvas);
 		this.body = body;
 	}
-
+	
 	@Override
 	public void draw(Graphics g) {
 		String spriteType = "tail-";
+		Point tmp=this.body.getSpeedVector().getDirection();
 
-		//Watch where his attach part is going
 		switch(this.body.getCurrentMove()){
 		case "turn-up-right": 
-			spriteType += "right";
+			if(tmp.getY()==-1){
+				spriteType +="up";
+				this.setPosition(new Point((int)body.getPosition().getX(), (int)body.getPosition().getY()+16));
+			}
+			else {
+				spriteType +="left";
+				this.setPosition(new Point((int)body.getPosition().getX()+16, (int)body.getPosition().getY()));
+			}
 			break;
 		case "turn-up-left":
-			spriteType += "left";
+			if(tmp.getY()==-1){
+				spriteType +="up";
+				this.setPosition(new Point((int)body.getPosition().getX(), (int)body.getPosition().getY()+16));
+			}
+			else {
+				spriteType +="right";
+				this.setPosition(new Point((int)body.getPosition().getX()-16, (int)body.getPosition().getY()));
+			}
 			break;
 		case "turn-down-left": 
-			spriteType += "left";
+			if(tmp.getY()==1){
+				spriteType +="down";
+				this.setPosition(new Point((int)body.getPosition().getX(), (int)body.getPosition().getY()-16));
+			}
+			else {
+				spriteType +="right";
+				this.setPosition(new Point((int)body.getPosition().getX()-16, (int)body.getPosition().getY()));
+			}
 			break;
 		case "turn-down-right":
-			spriteType += "right";
+			if(tmp.getX()==-1){
+				spriteType +="left";
+				this.setPosition(new Point((int)body.getPosition().getX()+16, (int)body.getPosition().getY()));
+			}
+			else {
+				spriteType +="down";
+				this.setPosition(new Point((int)body.getPosition().getX(), (int)body.getPosition().getY()-16));
+			}
 			break;
 		case "vertical":
-			spriteType +="up";
+			if(tmp.getY()==1){
+				spriteType +="down";
+				this.setPosition(new Point((int)body.getPosition().getX(), (int)body.getPosition().getY()-16));
+			}
+			else{
+				spriteType +="up";
+				this.setPosition(new Point((int)body.getPosition().getX(), (int)body.getPosition().getY()+16));
+			}
 			break;
 		case "horizontal":
-			spriteType +="left";
+			if(tmp.getX()==1){
+				spriteType +="right";
+				this.setPosition(new Point((int)body.getPosition().getX()-16, (int)body.getPosition().getY()));
+			}
+			else {
+				spriteType +="left";
+				this.setPosition(new Point((int)body.getPosition().getX()+16, (int)body.getPosition().getY()));
+			}
 			break;
 		default:
 			spriteType += "left";
 		}
-
+		
+		lastMove = currentMove;
 		spriteManager.setType(spriteType);
 		spriteManager.draw(g, getPosition());
 	}
 
 	@Override
 	public void oneStepMoveAddedBehavior() {
-		//Watch if the part is movable
-		if(this.body.movable){
-			Point goal = null;
-			//Watch where his attach part is going
-			switch (this.body.getLastMove()){
-			case "up":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()-1);
-				break;
-			case "down":
-				goal = new Point((int)this.getPosition().getX(), (int)this.getPosition().getY()+1);
-				break;
-			case "right":
-				goal = new Point((int)this.getPosition().getX()+1, (int)this.getPosition().getY());
-				break;
-			case "left":
-				goal = new Point((int)this.getPosition().getX()-1, (int)this.getPosition().getY());
-				break;
-			default:
-				goal = null;
-				break;
-			}
-/*
-			//Allows to move to his current position to his attach part
-			this.strat = new MoveStrategyStraightLine(this.getPosition(), goal);
-			snakeDriver = new GameMovableDriverDefaultImpl();
-			snakeDriver.setStrategy(this.strat);
-			this.setDriver(snakeDriver);*/
-		}
+		//
 	}
 }

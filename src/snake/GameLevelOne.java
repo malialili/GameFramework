@@ -121,7 +121,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				
 				Snake snakeH = new SnakeHead(canvas);
 				Snake snakeB = new SnakeBody(canvas, snakeH);
-				//Snake snakeT = new SnakeTail(canvas, snakeB);
+				Snake snakeT = new SnakeTail(canvas, snakeB);
 				
 				GameMovableDriverDefaultImpl snakeDriver = new GameMovableDriverDefaultImpl();
 				MoveStrategyKeyboard keyStr = new MoveStrategyKeyboard();			
@@ -139,9 +139,9 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				snakeB.setDriver(snakeDriver);
 				snakeB.setPosition(new Point(15 * SPRITE_SIZE, 17 * SPRITE_SIZE));
 				universe.addGameEntity(snakeB);
-				/*snakeT.setDriver(snakeDriver);
+				snakeT.setDriver(snakeDriver);
 				snakeT.setPosition(new Point(16 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-				universe.addGameEntity(snakeT);	*/						
+				universe.addGameEntity(snakeT);						
 	}
 }
 

@@ -17,7 +17,7 @@ public class SnakeHead extends Snake{
 		Point tmp = getSpeedVector().getDirection();
 		movable = true;	
 		lastMove = currentMove;
-		//Watch which direction the head is going
+
 		if (tmp.getX() == 1) {
 			spriteType += "right";
 			currentMove = "right";
