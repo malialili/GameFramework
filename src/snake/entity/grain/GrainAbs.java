@@ -29,6 +29,9 @@ public abstract class GrainAbs implements IGrain {
 				RENDERING_SIZE, RENDERING_SIZE));
 	}
 	
+	public abstract void setGrainVisible(int timer);
 	public abstract String toString();
+	public abstract boolean isInvisible();	
+	public abstract void operation();
 
 }

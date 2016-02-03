@@ -3,21 +3,22 @@ package snake.entity;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.List;
 
-public class SnakeBody extends Snake{
+public class SnakeBody extends SnakeAbstract{
 
-	protected Snake head;
+	protected SnakeAbstract head;
 
-	public SnakeBody(Canvas defaultCanvas, Snake head) {
+	public SnakeBody(Canvas defaultCanvas, SnakeAbstract head) {
 		super(defaultCanvas);
 		this.head = head;
 	}
-
-	public Snake getHead() {
+	
+	public SnakeAbstract getHead() {
 		return head;
 	}
 
-	public void setHead(Snake head) {
+	public void setHead(SnakeAbstract head) {
 		this.head = head;
 	}
 
@@ -104,5 +105,23 @@ public class SnakeBody extends Snake{
 		if (movable) {
 			spriteManager.increment();		
 		}
+	}
+
+	@Override
+	public void add(SnakeAbstract s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove(SnakeAbstract s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<SnakeAbstract> getChildren() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

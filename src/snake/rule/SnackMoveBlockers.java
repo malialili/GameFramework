@@ -2,6 +2,8 @@ package snake.rule;
 
 import gameframework.game.IllegalMoveException;
 import gameframework.game.MoveBlockerRulesApplierDefaultImpl;
+
+import snake.entity.SnakeAbstract;
 import snake.entity.Wall;
 
 
