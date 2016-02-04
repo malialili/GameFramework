@@ -11,7 +11,7 @@ import gameframework.base.Overlappable;
 import gameframework.game.GameEntity;
 import gameframework.game.MoveBlocker;
 
-public class Wall implements Drawable, MoveBlocker, GameEntity, Overlappable{
+public class Wall implements Drawable, MoveBlocker, GameEntity{
 
 	protected static DrawableImage image = null;
 	int x, y; 
@@ -36,10 +36,5 @@ public class Wall implements Drawable, MoveBlocker, GameEntity, Overlappable{
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
 	}
-
-	@Override
-	public Point getPosition() {
-		return position;
-	}	
 
 }
