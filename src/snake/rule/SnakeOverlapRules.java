@@ -1,18 +1,17 @@
 package snake.rule;
 
+
 import gameframework.base.ObservableValue;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
-
 import java.awt.Canvas;
 import java.awt.Point;
-
 import snake.entity.SnakeAbstract;
 import snake.entity.SnakeHead;
 import snake.entity.Wall;
 import snake.entity.boardgame.BordGame;
 import snake.entity.grain.Bomb;
-
+import snake.entity.grain.GrainAbs;
 import snake.entity.grain.GrainDead;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.GrainLife;
@@ -33,12 +32,12 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	protected IGrainFactory grainFact;
 	private int totalNbGrains = 0;
 	private int nbEatenGrains = 0;
-	private int[][] tab = BordGame.getTab();
+	private int[][] tab = BordGame.getTab();	
+	private boolean isEaten = false;
 	protected Canvas canvas;
 	protected GameUniverse universe;
 
-	GrainLife grainLife;
-	GrainDead grainDead;
+	GrainAbs grainLife, grainDead;
 	boolean isGrainLifeCreated = false;
 	boolean isGrainDeadCreated = false;
 	
@@ -68,7 +67,6 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 
 	// overlap wall
-
 	public void overlapRule(SnakeAbstract p, Wall w) {
 		life.setValue(life.getValue()-1);
 		if(life.getValue()==0)
@@ -77,11 +75,12 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 	public void overlapRule(SnakeHead p, GrainScore grainScore) {		
 		score.setValue(score.getValue() + 5);
+		isEaten = true;
 		universe.removeGameEntity(grainScore);
 		tab[(int) grainScore.getPosition().getX()/16][(int) grainScore.getPosition().getY()/16]=0;
 		
 		grainEatenHandler();
-		
+	
 		if(totalNbGrains == 0){
 			int x = random(MIN_XY, MAX_X) ;
 			int y = random(MIN_XY, MAX_Y) ;
@@ -132,8 +131,8 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 
 	public void GameWithGrainLife(){
-		if(nbEatenGrains == 5 || nbEatenGrains == 15 || nbEatenGrains == 25){
-			System.out.println("je crée grainLife");
+		if(nbEatenGrains == 4 || nbEatenGrains == 8 || nbEatenGrains == 12){
+			System.out.println("un grainLife a été créé");
 			grainLife = (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			isGrainLifeCreated = true;
 			universe.addGameEntity(grainLife);
@@ -152,7 +151,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	
 	public void GameWithGrainDead(){
 		
-		if(nbEatenGrains == 8 || nbEatenGrains == 22 || nbEatenGrains == 32){
+		if(nbEatenGrains == 7 || nbEatenGrains == 14 || nbEatenGrains == 21){
 			System.out.println("un grainDead a été créé");
 			grainDead = (GrainDead) grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			isGrainDeadCreated = true;
@@ -182,7 +181,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 	
 	public void GameWithWall(){
-		if(nbEatenGrains == 5){
+		if(nbEatenGrains == 3){
 			int j = 15;
 			while (j < 27) {
 				if (tab[j][5]== 0) {
@@ -192,7 +191,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 			    j++;
 			}
 		}
-		if(nbEatenGrains == 10){
+		if(nbEatenGrains == 6){
 			int j = 6;
 			while (j < 15) {
 				if (tab[j][15]== 0) {
@@ -205,9 +204,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		if(nbEatenGrains == 15){
 			int j = 0;
 			while (j < 17) {
-				System.out.println(" tab"+ tab[j][22]);
 				if (tab[j][22]== 0) {
-					//System.out.println("j :" + j +" tab"+ tab[j][22]);
 					tab[j][22]= 1;
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 22* SPRITE_SIZE));					
 				}
@@ -238,4 +235,13 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		return totalNbGrains;
 	}
 
+	public boolean isEaten() {
+		return isEaten;
+	}
+
+	public void setEaten(boolean isEaten) {
+		this.isEaten = isEaten;
+	}
+
+	
 }

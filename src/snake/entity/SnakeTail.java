@@ -16,15 +16,16 @@ public class SnakeTail extends SnakeAbstract{
 	
 	private static SnakeTail singleSnakeTail;
 
-	public SnakeTail(Canvas defaultCanvas, SnakeAbstract body) {
+	private SnakeTail(Canvas defaultCanvas, SnakeAbstract body) {
 		super(defaultCanvas);
 		SnakeTail.body = body;
 	}
 	
-	public static SnakeTail getInstance(){
+	public static SnakeTail getInstance(Canvas defaultCanvas, SnakeAbstract body){
 		if(singleSnakeTail == null){
-			singleSnakeTail = new SnakeTail(new Canvas(), body);
-		}
+			singleSnakeTail = new SnakeTail(defaultCanvas, body);
+		}else
+			System.out.println("une instance a déja été crée");
 		return singleSnakeTail;
 	}
 	
@@ -113,19 +114,15 @@ public class SnakeTail extends SnakeAbstract{
 
 	@Override
 	public void add(SnakeAbstract s) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void remove(SnakeAbstract s) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public List<SnakeAbstract> getChildren() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

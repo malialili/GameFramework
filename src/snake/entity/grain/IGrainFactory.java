@@ -1,7 +1,5 @@
 package snake.entity.grain;
 
-import gameframework.game.GameEntity;
-
 import java.awt.Canvas;
 import java.awt.Point;
 

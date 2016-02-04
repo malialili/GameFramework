@@ -9,14 +9,16 @@ public class SnakeHead extends SnakeAbstract{
 	
 	private static SnakeHead singleSnakeHead = null;
 	
-	public SnakeHead(Canvas defaultCanvas) {
+	private SnakeHead(Canvas defaultCanvas) {
 		super(defaultCanvas);
 	}
 	
-	public static SnakeHead getInstance(){
+	public static SnakeHead getInstance(Canvas defaultCanvas){
 		if(singleSnakeHead == null){
-			singleSnakeHead = new SnakeHead(new Canvas());
+			singleSnakeHead = new SnakeHead(defaultCanvas);
 		}
+		else
+			System.out.println("une instance a déja été crée");
 		return singleSnakeHead;
 	}
 
