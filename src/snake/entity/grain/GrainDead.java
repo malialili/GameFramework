@@ -41,7 +41,6 @@ public class GrainDead extends GrainAbs{
 	}
 	
 	public boolean isInvisible(){
-		System.out.println("timer " + inVisibleTimer);
 		return (inVisibleTimer <= 0);
 	}
 	

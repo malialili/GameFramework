@@ -80,6 +80,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 				
 				if(tab[i][j]== 4){
 					universe.addGameEntity(new Bomb(canvas,new Point(j*SPRITE_SIZE, i* SPRITE_SIZE)));
+					System.out.println("i"+ i +" j"+ j);
 				}			
 			}
 		}

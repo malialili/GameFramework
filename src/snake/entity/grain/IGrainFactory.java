@@ -5,7 +5,7 @@ import gameframework.game.GameEntity;
 import java.awt.Canvas;
 import java.awt.Point;
 
-public interface IGrainFactory extends GameEntity{
+public interface IGrainFactory {
 
 		IGrain creerGrainScore(Canvas defaultCanvas, Point pos);
 		

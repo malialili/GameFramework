@@ -75,23 +75,21 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 			endOfGame.setValue(true);
 	}	
 
-	public void overlapRule(SnakeHead p, GrainScore grainScore) {
-		
+	public void overlapRule(SnakeHead p, GrainScore grainScore) {		
 		score.setValue(score.getValue() + 5);
 		universe.removeGameEntity(grainScore);
+		tab[(int) grainScore.getPosition().getX()/16][(int) grainScore.getPosition().getY()/16]=0;
+		
 		grainEatenHandler();
 		
 		if(totalNbGrains == 0){
 			int x = random(MIN_XY, MAX_X) ;
 			int y = random(MIN_XY, MAX_Y) ;
-			System.out.println( x+","+y);
 			if(tab[x][y]==1){
-				System.out.println("un autre random");
 				 x = random(MIN_XY, MAX_X) ;
 				 y = random(MIN_XY, MAX_Y) ;
 				 grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(x * SPRITE_SIZE, y * SPRITE_SIZE));
 				 universe.addGameEntity( grainScore);
-				 System.out.println("un autre "+x+","+y);
 				 totalNbGrains++;
 			} else {
 				grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(x * SPRITE_SIZE, y * SPRITE_SIZE));
@@ -144,7 +142,6 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		
 		if(isGrainLifeCreated){
 			if(grainLife.isInvisible()== true){
-				System.out.println("je suis à off");
 				universe.removeGameEntity(grainLife);
 			}else{
 				grainLife.operation();
@@ -185,11 +182,11 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 	
 	public void GameWithWall(){
-		if(nbEatenGrains == 10){
+		if(nbEatenGrains == 5){
 			int j = 15;
 			while (j < 27) {
-				if (tab[5][j]== 0) {
-					tab[5][j]= 1;
+				if (tab[j][5]== 0) {
+					tab[j][5]= 1;
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 5 * SPRITE_SIZE));
 				}
 			    j++;
@@ -198,19 +195,21 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		if(nbEatenGrains == 10){
 			int j = 6;
 			while (j < 15) {
-				if (tab[15][j]== 0) {
-					tab[15][j]= 1;
+				if (tab[j][15]== 0) {
+					tab[j][15]= 1;
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 15* SPRITE_SIZE));
 				}
 			    j++;
 			}
 		}
-		if(nbEatenGrains == 20){
+		if(nbEatenGrains == 15){
 			int j = 0;
 			while (j < 17) {
-				if (tab[22][j]== 0) {
-					tab[22][j]= 1;
-					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 22* SPRITE_SIZE));
+				System.out.println(" tab"+ tab[j][22]);
+				if (tab[j][22]== 0) {
+					//System.out.println("j :" + j +" tab"+ tab[j][22]);
+					tab[j][22]= 1;
+					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 22* SPRITE_SIZE));					
 				}
 			    j++;
 			}
