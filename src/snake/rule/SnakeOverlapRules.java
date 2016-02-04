@@ -1,16 +1,14 @@
 package snake.rule;
 
+import gameframework.base.MoveStrategyStraightLine;
 import gameframework.base.ObservableValue;
-/*import gameframework.base.MoveStrategyStraightLine;
-import gameframework.base.Overlap;
-import gameframework.game.GameMovableDriverDefaultImpl;*/
+import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
 
 import java.awt.Canvas;
 import java.awt.Point;
 import java.util.Vector;
-
 import snake.GameLevelOne;
 import snake.entity.Bomb;
 import snake.entity.Ghost;
@@ -44,6 +42,8 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	private int nbEatenGrains = 0;
 	protected Canvas canvas;
 	private int[][] tab = BordGame.getTab();
+	
+	private boolean isEaten = false;
 
 	public SnakeOverlapRules(Point snakePos, Point gPos,
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
@@ -82,15 +82,16 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	GrainAbs grainLife, grainDead;
 	boolean isGrainLifeCreated = false;
 	boolean isGrainDeadCreated = false;
-
+	
 	public void overlapRule(SnakeHead p, GrainScore grainScore) {
 		
 		score.setValue(score.getValue() + 5);
+		isEaten = true;
 		universe.removeGameEntity(grainScore);
 		grainEatenHandler();
-		
+	
 		if(totalNbGrains == 0){
-			grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
+			grainScore = (GrainScore) grainFact.creerGrainScore(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			universe.addGameEntity( grainScore);
 			totalNbGrains++;		
 		}
@@ -237,4 +238,13 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		return totalNbGrains;
 	}
 
+	public boolean isEaten() {
+		return isEaten;
+	}
+
+	public void setEaten(boolean isEaten) {
+		this.isEaten = isEaten;
+	}
+
+	
 }

@@ -11,9 +11,15 @@ import java.util.List;
 public class SnakeComposite extends SnakeAbstract {
 
 	List<SnakeAbstract> listeComposantSnake = new ArrayList<SnakeAbstract>();
+	SnakeComposite snakeCompo;
 	int sizeListe;
 	public SnakeComposite(Canvas defaultCanvas) {
 		super(defaultCanvas);
+	}
+	
+	public SnakeComposite(Canvas defaultCanvas, SnakeComposite snakeCompo) {
+		super(defaultCanvas);
+		this.snakeCompo = snakeCompo;
 	}
 
 	@Override
@@ -67,6 +73,14 @@ public class SnakeComposite extends SnakeAbstract {
 
 	public void setSizeListe(int sizeListe) {
 		this.sizeListe = sizeListe;
+	}
+	
+	public SnakeComposite getSnakeCompo() {
+		return snakeCompo;
+	}
+
+	public void setSnakeCompo(SnakeComposite snakeCompo) {
+		this.snakeCompo = snakeCompo;
 	}
 
 }

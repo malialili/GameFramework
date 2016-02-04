@@ -32,6 +32,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 	IGrainFactory grainFact;
 	int totalNbGrains = 0;
 	int nb;
+	private boolean isEaten = false;
 	
 	public GameLevelOne(Game g) {
 		super(g);
@@ -61,6 +62,8 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		overlapProcessor.setOverlapRules(overlapRules);
 		
 		nb = overlapRules.getNbEatenGrains(); 
+		
+		isEaten = overlapRules.isEaten();
 
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
 		overlapRules.setUniverse(universe);
@@ -86,15 +89,11 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		}
 		
 		overlapRules.setTotalNbGrains(totalNbGrains);
-				
-		/*SnakeAbstract snakeH = new SnakeHead(canvas);
-		SnakeAbstract snakeB = new SnakeBody(canvas, snakeH);
-		SnakeAbstract snakeT = new SnakeTail(canvas, snakeB);*/
 		
 		final SnakeComposite scomposite = new SnakeComposite(canvas);
-		final SnakeHead head = new SnakeHead(canvas);
+		final SnakeHead head = SnakeHead.getInstance(canvas);
 		final SnakeBody body = new SnakeBody(canvas,head);
-		final SnakeTail tail = new SnakeTail(canvas, body);
+		final SnakeTail tail = SnakeTail.getInstance(canvas, body);
 		
 		scomposite.add(head);
 		scomposite.add(body);
@@ -112,27 +111,11 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		universe.addGameEntity(head);
 		universe.addGameEntity(body);
 		universe.addGameEntity(tail);
-		
-		/*head.setDriver(snakeDriver);
-		head.setPosition(new Point(15 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(head);
-		
-
-		body.setDriver(snakeDriver);
-		body.setPosition(new Point(16 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(body);
-		
-
-		tail.setDriver(snakeDriver);
-		tail.setPosition(new Point(17 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(tail);*/
-		
-		/*snakeB.setDriver(snakeDriver);
-		snakeB.setPosition(new Point(15 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(snakeB);
-		snakeT.setDriver(snakeDriver);
-		snakeT.setPosition(new Point(16 * SPRITE_SIZE, 17 * SPRITE_SIZE));
-		universe.addGameEntity(snakeT);	*/					
+				
+	}
+	
+	public void gameInLoad(){
+		System.out.println("je suis la " + isEaten);
 	}
 	
 }
