@@ -16,8 +16,8 @@ public class GrainFactory implements IGrainFactory {
 	}
 
 	@Override
-	public IGrain creerGrainDead(Canvas defaultCanvas, Point pos) {
-		return new GrainDead(defaultCanvas, pos);
+	public IGrain creerGrainDeath(Canvas defaultCanvas, Point pos) {
+		return new GrainDeath(defaultCanvas, pos);
 	}
 
 	@Override

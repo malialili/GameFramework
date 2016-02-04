@@ -12,7 +12,7 @@ import snake.entity.Wall;
 import snake.entity.boardgame.BordGame;
 import snake.entity.grain.Bomb;
 import snake.entity.grain.GrainAbs;
-import snake.entity.grain.GrainDead;
+import snake.entity.grain.GrainDeath;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.GrainLife;
 import snake.entity.grain.GrainScore;
@@ -37,9 +37,9 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	protected Canvas canvas;
 	protected GameUniverse universe;
 
-	GrainAbs grainLife, grainDead;
+	GrainAbs grainLife, grainDeath;
 	boolean isGrainLifeCreated = false;
-	boolean isGrainDeadCreated = false;
+	boolean isGraindeathCreated = false;
 	
 	public SnakeOverlapRules(Point snakePos, Point gPos,
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
@@ -98,7 +98,7 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		}
 		
 		GameWithGrainLife();
-		GameWithGrainDead();
+		GameWithGraindeath();
 		GameWithBomb();
 		GameWithWall();
 	
@@ -111,11 +111,11 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		universe.removeGameEntity(grainLife);
 	}
 	
-	public void overlapRule(SnakeHead p, GrainDead graindead){
+	public void overlapRule(SnakeHead p, GrainDeath graindeath){
 		life.setValue(life.getValue() - 1);
 		score.setValue(0);
-		universe.removeGameEntity(graindead);
-		System.out.println("vous avez mangé grainDead!!! vous perdez une vie :(");
+		universe.removeGameEntity(graindeath);
+		System.out.println("vous avez mangé graindeath!!! vous perdez une vie :(");
 		if (life.getValue()==0)
 			System.out.println("Vous avez perdu votre dernière vie :( ");
 	}
@@ -149,21 +149,21 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		
 	}
 	
-	public void GameWithGrainDead(){
+	public void GameWithGraindeath(){
 		
 		if(nbEatenGrains == 7 || nbEatenGrains == 14 || nbEatenGrains == 21){
-			System.out.println("un grainDead a été créé");
-			grainDead = (GrainDead) grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
-			isGrainDeadCreated = true;
-			universe.addGameEntity(grainDead);
-			grainDead.setGrainVisible(IGRAIN_DURATION);
+			System.out.println("un graindeath a été créé");
+			grainDeath = (GrainDeath) grainFact.creerGrainDeath(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
+			isGraindeathCreated = true;
+			universe.addGameEntity(grainDeath);
+			grainDeath.setGrainVisible(IGRAIN_DURATION);
 		}
 		
-		if(isGrainDeadCreated){
-			if(grainDead.isInvisible()== true){
-				universe.removeGameEntity(grainDead);
+		if(isGraindeathCreated){
+			if(grainDeath.isInvisible()== true){
+				universe.removeGameEntity(grainDeath);
 			}else{
-				grainDead.operation();
+				grainDeath.operation();
 			}
 		}
 		

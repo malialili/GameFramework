@@ -8,14 +8,14 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 
-public class GrainDead extends GrainAbs{
+public class GrainDeath extends GrainAbs{
 
 	protected static DrawableImage image = null;
 	protected Point position;
 	public static final int RENDERING_SIZE = 16;
 	protected int inVisibleTimer = 0;
 
-	public GrainDead (Canvas defaultCanvas, Point pos) {
+	public GrainDeath (Canvas defaultCanvas, Point pos) {
 		image = new DrawableImage("images/grain-dead.gif", defaultCanvas);
 		position = pos;
 	}

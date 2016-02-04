@@ -9,7 +9,7 @@ public interface IGrainFactory {
 		
 		IGrain creerGrainLife(Canvas defaultCanvas, Point pos);
 		
-		IGrain creerGrainDead(Canvas defaultCanvas, Point pos);
+		IGrain creerGrainDeath(Canvas defaultCanvas, Point pos);
 		
 		IGrain creerBomb(Canvas defaultCanvas, Point pos);
 }
