@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 
 import gameframework.base.DrawableImage;
 
-public class GrainLife implements IGrain{
+public class GrainLife extends GrainAbs{
 	protected static DrawableImage image = null;
 	protected Point position;
 	public static final int RENDERING_SIZE = 16;

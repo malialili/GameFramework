@@ -1,2 +1,0 @@
-Main-Class: ClassePrincipale
-Class-Path: \Archives\liquidlnf.jar // Le fichier JAR contenant le Look&amp;Feel Liquid

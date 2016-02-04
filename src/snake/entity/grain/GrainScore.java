@@ -8,7 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 
-public class GrainScore implements IGrain{
+public class GrainScore extends GrainAbs{
 
 	protected static DrawableImage image = null;
 	protected Point position;
@@ -37,6 +37,24 @@ public class GrainScore implements IGrain{
 		
 	public String toString(){
 		return "GrainScore";
+	}
+
+	@Override
+	public void setGrainVisible(int timer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isInvisible() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void operation() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

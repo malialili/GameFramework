@@ -7,13 +7,15 @@ import java.awt.Rectangle;
 
 import gameframework.base.Drawable;
 import gameframework.base.DrawableImage;
+import gameframework.base.Overlappable;
 import gameframework.game.GameEntity;
 import gameframework.game.MoveBlocker;
 
-public class Wall implements Drawable, MoveBlocker, GameEntity{
+public class Wall implements Drawable, MoveBlocker, GameEntity, Overlappable{
 
 	protected static DrawableImage image = null;
-	int x, y;
+	int x, y; 
+	protected Point position;
 	public static final int RENDERING_SIZE = 16;
 
 	public Wall(Canvas defaultCanvas, int xx, int yy) {
@@ -34,5 +36,10 @@ public class Wall implements Drawable, MoveBlocker, GameEntity{
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
 	}
+
+	@Override
+	public Point getPosition() {
+		return position;
+	}	
 
 }
