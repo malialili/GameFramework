@@ -22,7 +22,6 @@ public class SnakeHead extends SnakeAbstract{
 		return singleSnakeHead;
 	}
 
-	@Override
 	public void draw(Graphics g) {
 		String spriteType = "head-";
 		
@@ -53,7 +52,7 @@ public class SnakeHead extends SnakeAbstract{
 		spriteManager.draw(g, getPosition());
 	}
 	
-	@Override
+	
 	public void oneStepMoveAddedBehavior() {
 		if (movable) {
 			spriteManager.increment();		

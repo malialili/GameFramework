@@ -14,12 +14,12 @@ import gameframework.game.MoveBlockerChecker;
 import gameframework.game.MoveBlockerCheckerDefaultImpl;
 import gameframework.game.OverlapProcessor;
 import gameframework.game.OverlapProcessorDefaultImpl;
-import snake.entity.Bomb;
 import snake.entity.SnakeBody;
 import snake.entity.SnakeComposite;
 import snake.entity.SnakeHead;
 import snake.entity.SnakeTail;
 import snake.entity.Wall;
+import snake.entity.grain.Bomb;
 import snake.entity.grain.GrainFactory;
 import snake.entity.grain.IGrainFactory;
 import snake.rule.SnackMoveBlockers;
@@ -29,15 +29,13 @@ import snake.entity.boardgame.BordGame;
 
 public class GameLevelOne extends GameLevelDefaultImpl{
 	Canvas canvas;
-	IGrainFactory grainFact;
+	IGrainFactory grainFact=new GrainFactory();
 	int totalNbGrains = 0;
 	int nb;
-	private boolean isEaten = false;
 	
 	public GameLevelOne(Game g) {
 		super(g);
 		canvas = g.getCanvas();
-		grainFact = new GrainFactory();
 	}
 	
 	int tab[][] = BordGame.getTab();
@@ -62,8 +60,6 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		overlapProcessor.setOverlapRules(overlapRules);
 		
 		nb = overlapRules.getNbEatenGrains(); 
-		
-		isEaten = overlapRules.isEaten();
 
 		universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
 		overlapRules.setUniverse(universe);
@@ -110,12 +106,7 @@ public class GameLevelOne extends GameLevelDefaultImpl{
 		//universe.addGameEntity(scomposite);
 		universe.addGameEntity(head);
 		universe.addGameEntity(body);
-		universe.addGameEntity(tail);
-				
-	}
-	
-	public void gameInLoad(){
-		System.out.println("je suis la " + isEaten);
+		universe.addGameEntity(tail);				
 	}
 	
 }

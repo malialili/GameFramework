@@ -19,7 +19,7 @@ public class GrainDead extends GrainAbs{
 		image = new DrawableImage("images/grain-dead.gif", defaultCanvas);
 		position = pos;
 	}
-
+	
 	public Point getPosition() {
 		return position;
 	}
@@ -41,7 +41,6 @@ public class GrainDead extends GrainAbs{
 	}
 	
 	public boolean isInvisible(){
-		System.out.println("timer " + inVisibleTimer);
 		return (inVisibleTimer <= 0);
 	}
 	

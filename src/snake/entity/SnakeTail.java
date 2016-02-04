@@ -114,19 +114,15 @@ public class SnakeTail extends SnakeAbstract{
 
 	@Override
 	public void add(SnakeAbstract s) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void remove(SnakeAbstract s) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public List<SnakeAbstract> getChildren() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

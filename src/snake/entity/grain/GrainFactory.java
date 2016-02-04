@@ -2,7 +2,6 @@ package snake.entity.grain;
 
 import java.awt.Canvas;
 import java.awt.Point;
-import snake.entity.Bomb;
 
 public class GrainFactory implements IGrainFactory {
 

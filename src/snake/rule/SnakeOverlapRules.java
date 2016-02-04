@@ -1,21 +1,16 @@
 package snake.rule;
 
-import gameframework.base.MoveStrategyStraightLine;
+
 import gameframework.base.ObservableValue;
-import gameframework.game.GameMovableDriverDefaultImpl;
 import gameframework.game.GameUniverse;
 import gameframework.game.OverlapRulesApplierDefaultImpl;
-
 import java.awt.Canvas;
 import java.awt.Point;
-import java.util.Vector;
-import snake.GameLevelOne;
-import snake.entity.Bomb;
-import snake.entity.Ghost;
 import snake.entity.SnakeAbstract;
 import snake.entity.SnakeHead;
 import snake.entity.Wall;
 import snake.entity.boardgame.BordGame;
+import snake.entity.grain.Bomb;
 import snake.entity.grain.GrainAbs;
 import snake.entity.grain.GrainDead;
 import snake.entity.grain.GrainFactory;
@@ -25,12 +20,9 @@ import snake.entity.grain.IGrainFactory;
 
 public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	
-	protected GameUniverse universe;
-	protected Vector<Ghost> vGhosts = new Vector<Ghost>();
-
 	static final int MIN_XY= 2;
 	static final int MAX_X= 25;
-	static final int MAX_Y= 28;
+	static final int MAX_Y= 27;
 	static final int SPRITE_SIZE = 16;
 	static final int IGRAIN_DURATION = 10;
 	
@@ -40,11 +32,15 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	protected IGrainFactory grainFact;
 	private int totalNbGrains = 0;
 	private int nbEatenGrains = 0;
-	protected Canvas canvas;
-	private int[][] tab = BordGame.getTab();
-	
+	private int[][] tab = BordGame.getTab();	
 	private boolean isEaten = false;
+	protected Canvas canvas;
+	protected GameUniverse universe;
 
+	GrainAbs grainLife, grainDead;
+	boolean isGrainLifeCreated = false;
+	boolean isGrainDeadCreated = false;
+	
 	public SnakeOverlapRules(Point snakePos, Point gPos,
 			ObservableValue<Integer> life, ObservableValue<Integer> score,
 			ObservableValue<Boolean> endOfGame) {
@@ -72,28 +68,33 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 
 	// overlap wall
 	public void overlapRule(SnakeAbstract p, Wall w) {
-		System.out.println("je me suis cheurté au mur");
 		life.setValue(life.getValue()-1);
 		if(life.getValue()==0)
 			endOfGame.setValue(true);
-		//}
 	}	
 
-	GrainAbs grainLife, grainDead;
-	boolean isGrainLifeCreated = false;
-	boolean isGrainDeadCreated = false;
-	
-	public void overlapRule(SnakeHead p, GrainScore grainScore) {
-		
+	public void overlapRule(SnakeHead p, GrainScore grainScore) {		
 		score.setValue(score.getValue() + 5);
 		isEaten = true;
 		universe.removeGameEntity(grainScore);
+		tab[(int) grainScore.getPosition().getX()/16][(int) grainScore.getPosition().getY()/16]=0;
+		
 		grainEatenHandler();
 	
 		if(totalNbGrains == 0){
-			grainScore = (GrainScore) grainFact.creerGrainScore(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
-			universe.addGameEntity( grainScore);
-			totalNbGrains++;		
+			int x = random(MIN_XY, MAX_X) ;
+			int y = random(MIN_XY, MAX_Y) ;
+			if(tab[x][y]==1){
+				 x = random(MIN_XY, MAX_X) ;
+				 y = random(MIN_XY, MAX_Y) ;
+				 grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(x * SPRITE_SIZE, y * SPRITE_SIZE));
+				 universe.addGameEntity( grainScore);
+				 totalNbGrains++;
+			} else {
+				grainScore= (GrainScore) grainFact.creerGrainScore(canvas, new Point(x * SPRITE_SIZE, y * SPRITE_SIZE));
+				universe.addGameEntity( grainScore);
+				totalNbGrains++;
+			}
 		}
 		
 		GameWithGrainLife();
@@ -130,9 +131,9 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 
 	public void GameWithGrainLife(){
-		if(nbEatenGrains == 5 || nbEatenGrains == 15 || nbEatenGrains == 25){
-			System.out.println("je crée grainLife");
-			grainLife = (GrainAbs) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
+		if(nbEatenGrains == 4 || nbEatenGrains == 8 || nbEatenGrains == 12){
+			System.out.println("un grainLife a été créé");
+			grainLife = (GrainLife) grainFact.creerGrainLife(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			isGrainLifeCreated = true;
 			universe.addGameEntity(grainLife);
 			grainLife.setGrainVisible(IGRAIN_DURATION);
@@ -140,7 +141,6 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 		
 		if(isGrainLifeCreated){
 			if(grainLife.isInvisible()== true){
-				System.out.println("je suis à off");
 				universe.removeGameEntity(grainLife);
 			}else{
 				grainLife.operation();
@@ -151,9 +151,9 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	
 	public void GameWithGrainDead(){
 		
-		if(nbEatenGrains == 8 || nbEatenGrains == 22 || nbEatenGrains == 32){
+		if(nbEatenGrains == 7 || nbEatenGrains == 14 || nbEatenGrains == 21){
 			System.out.println("un grainDead a été créé");
-			grainDead = (GrainAbs) grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
+			grainDead = (GrainDead) grainFact.creerGrainDead(canvas, new Point(random(MIN_XY, MAX_X) * SPRITE_SIZE, random(MIN_XY, MAX_Y) * SPRITE_SIZE));
 			isGrainDeadCreated = true;
 			universe.addGameEntity(grainDead);
 			grainDead.setGrainVisible(IGRAIN_DURATION);
@@ -181,35 +181,32 @@ public class SnakeOverlapRules extends OverlapRulesApplierDefaultImpl{
 	}
 	
 	public void GameWithWall(){
-		if(nbEatenGrains == 10){
+		if(nbEatenGrains == 3){
 			int j = 15;
 			while (j < 27) {
-				if (tab[5][j]== 0) {
-					tab[5][j]= 1;
-					System.out.println("modif plateau "+ j);
-					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 5* SPRITE_SIZE));
+				if (tab[j][5]== 0) {
+					tab[j][5]= 1;
+					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 5 * SPRITE_SIZE));
 				}
 			    j++;
 			}
 		}
-		if(nbEatenGrains == 20){
+		if(nbEatenGrains == 6){
 			int j = 6;
 			while (j < 15) {
-				if (tab[15][j]== 0) {
-					tab[15][j]= 1;
-					System.out.println("modif plateau "+ j);
+				if (tab[j][15]== 0) {
+					tab[j][15]= 1;
 					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 15* SPRITE_SIZE));
 				}
 			    j++;
 			}
 		}
-		if(nbEatenGrains == 30){
+		if(nbEatenGrains == 15){
 			int j = 0;
 			while (j < 17) {
-				if (tab[22][j]== 0) {
-					tab[22][j]= 1;
-					System.out.println("modif plateau "+ j);
-					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 22* SPRITE_SIZE));
+				if (tab[j][22]== 0) {
+					tab[j][22]= 1;
+					universe.addGameEntity(new Wall(canvas, j* SPRITE_SIZE, 22* SPRITE_SIZE));					
 				}
 			    j++;
 			}

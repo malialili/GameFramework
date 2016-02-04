@@ -1,12 +1,9 @@
-package snake.entity;
+package snake.entity.grain;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-
-import snake.entity.grain.GrainAbs;
-import snake.entity.grain.IGrain;
 
 import gameframework.base.DrawableImage;
 
@@ -40,8 +37,7 @@ public class Bomb extends GrainAbs{
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Bomb";
 	}
 
 	@Override
